@@ -8,42 +8,42 @@
 <style>
 /* Layout: sticky contact bar on top, filter sidebar left, 3-up car cards right; car page = gallery + specs left, EMI + contact right */
 :root{
-  --bg:#F4F3F1; --surface:#FFFFFF; --ink:#232B3A; --muted:#6A7080; --line:#E3E2DE;
-  --brand:#2B3447; --accent:#C65D43; --accent-ink:#FFFFFF; --sun:#EADFC4; --chip:#F0EFEC;
-  --glow:#E4E6EC; --good:#3C7A5E;
+  --bg:#FFFFFF; --surface:#FFFFFF; --ink:#33190A; --muted:#85644F; --line:#FFDCC2;
+  --brand:#D44C06; --brand2:#F2791F; --accent:#D44C06; --accent-ink:#FFFFFF; --sun:#FFE4CC; --chip:#FFF1E6;
+  --glow:#FFE6D1; --good:#2F7A4F;
   --display:'Unbounded','Trebuchet MS',sans-serif; --body:'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif;
+  color-scheme:light;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#14171D; --surface:#1D222B; --ink:#ECEDF0; --muted:#9AA0AE; --line:#2B313C; --brand:#1A1F29;
-  --chip:#262C37; --glow:#2A303C; --accent:#D9745A; --sun:#CDBF9A; --good:#6DB08F; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#14171D; --surface:#1D222B; --ink:#ECEDF0; --muted:#9AA0AE; --line:#2B313C; --brand:#1A1F29;
-  --chip:#262C37; --glow:#2A303C; --accent:#D9745A; --sun:#CDBF9A; --good:#6DB08F; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;
   padding-block:0 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--brand)}
 a{color:inherit}
 button,input,select{font:inherit;color:inherit}
-:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+:focus-visible{outline:3px solid var(--brand2);outline-offset:2px}
 .wrap{max-width:1240px;margin-inline:auto}
 .full{margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px)))}
 
 /* top bar */
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--brand);color:#fff;
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:linear-gradient(100deg,var(--brand),var(--brand2));color:#fff;
   margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px)));
   padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));
-  box-shadow:0 6px 24px -12px rgba(20,5,60,.7)}
+  box-shadow:0 8px 24px -12px rgba(150,50,0,.55)}
 .top .wrap{display:flex;align-items:center;gap:12px 20px;flex-wrap:wrap}
 .logo{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:.04em;text-decoration:none;display:flex;align-items:center;gap:8px}
-.logo i{width:26px;height:26px;border-radius:50%;background:conic-gradient(var(--accent),var(--sun),var(--accent));display:grid;place-items:center}
+.logo i{width:26px;height:26px;border-radius:50%;background:conic-gradient(#fff,#FFC799,#fff);display:grid;place-items:center}
 .logo i::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--brand)}
 .contact{margin-left:auto;display:flex;align-items:center;gap:8px 18px;flex-wrap:wrap;font-size:14px}
 .contact .who{display:flex;flex-direction:column;line-height:1.2}
 .contact .who small{opacity:.7;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
 .contact .who b{font-weight:700;font-size:15px}
 .pill{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:99px;text-decoration:none;font-weight:600;font-size:14px;border:0;cursor:pointer}
-.pill.sun{background:var(--sun);color:#2B2410}
+.pill.sun{background:var(--sun);color:#4A1E00}
+.top .pill.sun{background:#fff;color:var(--brand)}
+.pill.wa{background:#25D366;color:#05300F}
+.top .nums{display:flex;flex-direction:column;line-height:1.25;font-weight:700;font-size:15px}
+.top .nums small{opacity:.85;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.top .nums a{text-decoration:none}
 .stage img{cursor:zoom-in}
 .lb{position:fixed;inset:0;z-index:50;background:rgba(10,12,16,.94);display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
 .lb .trk{width:100%;height:100%;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;overscroll-behavior:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
@@ -64,7 +64,7 @@ button,input,select{font:inherit;color:inherit}
 
 /* hero strip */
 .strip{margin-top:18px;border-radius:22px;overflow:hidden;position:relative;color:#fff;
-  background:var(--brand);display:grid;grid-template-columns:1.1fr 1fr;align-items:center;min-height:190px}
+  background:linear-gradient(110deg,var(--brand) 20%,var(--brand2));display:grid;grid-template-columns:1.1fr 1fr;align-items:center;min-height:190px}
 .strip div{padding:24px 28px}
 .strip h1{font-family:var(--display);font-size:clamp(20px,3.2vw,32px);line-height:1.15;margin:0 0 8px;font-weight:800;text-wrap:balance}
 .strip p{margin:0;opacity:.85;max-width:44ch}
@@ -118,10 +118,10 @@ button,input,select{font:inherit;color:inherit}
 /* car card */
 .card{background:var(--surface);border-radius:22px;overflow:hidden;text-decoration:none;display:flex;flex-direction:column;
   box-shadow:0 1px 0 var(--line);transition:transform .2s,box-shadow .2s}
-.card:hover{transform:translateY(-4px);box-shadow:0 18px 36px -18px rgba(42,15,107,.55)}
+.card:hover{transform:translateY(-4px);box-shadow:0 18px 36px -18px rgba(212,76,6,.45)}
 .card .ph{aspect-ratio:16/9;background:radial-gradient(120% 90% at 50% 0%,var(--glow),transparent 70%),linear-gradient(180deg,var(--chip),var(--surface));position:relative}
 .card .ph img{width:100%;height:100%;object-fit:cover}
-.heart{position:absolute;top:12px;right:12px;width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.9);color:#2A0F6B;cursor:pointer;display:grid;place-items:center}
+.heart{position:absolute;top:12px;right:12px;width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.95);color:#D44C06;cursor:pointer;display:grid;place-items:center}
 .heart[aria-pressed="true"]{background:var(--accent);color:#fff}
 .heart svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2}
 .heart[aria-pressed="true"] svg{fill:currentColor}
@@ -133,8 +133,7 @@ button,input,select{font:inherit;color:inherit}
 .chips{display:flex;gap:6px;flex-wrap:wrap}
 .chips span{background:var(--chip);border-radius:99px;padding:3px 11px;font-size:13px;color:var(--muted)}
 .loc{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);gap:8px}
-.loc b{color:var(--brand);background:var(--sun);border-radius:6px;padding:1px 8px;font-size:12px}
-:root[data-theme="dark"] .loc b{color:#2A1500}
+.loc b{color:#7A2E00;background:var(--sun);border-radius:6px;padding:1px 8px;font-size:12px}
 .tag{border-top:1px solid var(--line);padding:11px 18px;font-size:14px;font-weight:600;color:var(--good);display:flex;gap:8px;align-items:center}
 .empty{background:var(--surface);border-radius:20px;padding:40px 24px;text-align:center;color:var(--muted)}
 .empty b{display:block;color:var(--ink);font-size:18px;margin-bottom:4px}
@@ -150,9 +149,9 @@ button,input,select{font:inherit;color:inherit}
 .gal{background:var(--surface);border-radius:22px;overflow:hidden}
 .stage{position:relative;aspect-ratio:16/9;background:radial-gradient(100% 80% at 50% 0%,var(--glow),var(--chip));display:grid;place-items:center}
 .stage img{width:100%;height:100%;object-fit:contain}
-.nav{position:absolute;top:50%;translate:0 -50%;width:42px;height:42px;border-radius:50%;border:0;background:rgba(27,11,69,.78);color:#fff;font-size:20px;cursor:pointer}
+.nav{position:absolute;top:50%;translate:0 -50%;width:42px;height:42px;border-radius:50%;border:0;background:rgba(60,25,5,.78);color:#fff;font-size:20px;cursor:pointer}
 .nav.p{left:12px}.nav.n{right:12px}
-.cnt{position:absolute;right:12px;bottom:12px;background:rgba(27,11,69,.78);color:#fff;border-radius:99px;padding:3px 12px;font-size:12px}
+.cnt{position:absolute;right:12px;bottom:12px;background:rgba(60,25,5,.78);color:#fff;border-radius:99px;padding:3px 12px;font-size:12px}
 .thumbs{display:flex;gap:8px;padding:10px;overflow-x:auto}
 .thumbs button{flex:0 0 84px;aspect-ratio:16/10;border-radius:10px;overflow:hidden;border:2px solid transparent;padding:0;background:var(--chip);cursor:pointer;opacity:.7}
 .thumbs button[aria-current="true"]{border-color:var(--accent);opacity:1}
@@ -171,27 +170,27 @@ button,input,select{font:inherit;color:inherit}
 .feat li::before{content:"✓";flex:0 0 24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:800}
 .side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px);display:flex;flex-direction:column;gap:20px;min-width:0}
 @media(max-width:960px){.side{position:static}}
-.emi{background:var(--brand);color:#fff;border-radius:22px;padding:22px}
+.emi{background:linear-gradient(160deg,var(--brand),var(--brand2));color:#fff;border-radius:22px;padding:22px}
 .emi h2{font-family:var(--display);font-size:16px;margin:0 0 4px}
 .emi .sub{opacity:.75;font-size:13px;margin:0 0 16px}
 .emi label{display:block;font-size:12px;font-weight:600;opacity:.85;margin:12px 0 5px}
 .emi .in{background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.18)}
-.emi .in:focus{border-color:var(--sun)}
-.emi select.in option{color:#1B0B45}
+.emi .in:focus{border-color:#fff}
+.emi select.in option{color:#33190A}
 .pre{position:relative}
 .pre span{position:absolute;left:12px;top:50%;translate:0 -50%;opacity:.8}
 .pre input{padding-left:28px}
 .pre.pct input{padding-left:12px;padding-right:30px}
 .pre.pct span{left:auto;right:12px}
-.out{margin-top:18px;background:var(--sun);color:#2A1500;border-radius:16px;padding:16px}
+.out{margin-top:18px;background:#fff;color:#33190A;border-radius:16px;padding:16px}
 .out small{font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
-.out .amt{font-family:var(--display);font-size:30px;font-weight:800;line-height:1.2}
+.out .amt{font-family:var(--display);font-size:30px;font-weight:800;line-height:1.2;color:var(--brand)}
 .out .amt i{font-style:normal;font-size:14px;font-family:var(--body);font-weight:600}
 .out dl{display:grid;grid-template-columns:1fr auto;gap:2px 12px;margin:10px 0 0;font-size:13px}
 .out dd{margin:0;font-weight:700;text-align:right}
 .note{font-size:12px;opacity:.7;margin:10px 0 0}
 .cta{display:flex;flex-direction:column;gap:10px}
-.cta .num{font-family:var(--display);font-size:22px;font-weight:800;word-break:break-all}
+.cta .num{font-family:var(--display);font-size:22px;font-weight:800;line-height:1.5;color:var(--brand)}
 .cta .row{display:flex;gap:8px;flex-wrap:wrap}
 @media(max-width:600px){
   body{font-size:15px}
@@ -210,18 +209,20 @@ button,input,select{font:inherit;color:inherit}
   .nav{width:38px;height:38px}
   .in,.emi .in,select{font-size:16px}
 }
+.filters,.card,.panel,.gal{border:1px solid var(--line)}
+.card .tag{background:var(--chip)}
 .foot{margin-top:36px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 </style>
-<style>html{color-scheme:light dark}body{margin:0;font-family:var(--body)}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>html{color-scheme:light}body{margin:0;font-family:var(--body)}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
 <header class="top">
   <div class="wrap">
     <a class="logo" href="#" aria-label="WHEELZA home"><i></i>WHEELZA</a>
     <div class="contact" id="contact">
-      <div class="who"><small>Contact us · Sales</small><b>Sreerag · 8129694868</b></div>
-      <a class="pill sun" href="tel:+918129694868">Call now</a>
-      <a class="pill line" href="https://maps.app.goo.gl/WFd6LkwXZ2kAwPC89" target="_blank" rel="noopener">Find us on map</a>
+      <div class="nums"><small>Call us</small><span><a href="tel:+918129694868">81296 94868</a> · <a href="tel:+919895563618">98955 63618</a></span></div>
+      <a class="pill wa" id="wa-top" href="#" target="_blank" rel="noopener">WhatsApp us</a>
+      <a class="pill line" href="https://maps.app.goo.gl/WFd6LkwXZ2kAwPC89" target="_blank" rel="noopener">Find us</a>
     </div>
   </div>
 </header>
@@ -232,7 +233,7 @@ button,input,select{font:inherit;color:inherit}
 /* ---------- DATA: add more cars here and they appear in the list + filters ----------
    PHOTOS: every car has its own folder  cars/<id>/  holding 01.jpg, 02.jpg, 03.jpg ...
    01.jpg is the cover photo. Set "photos" to how many pictures are in the folder. */
-const PHONE="8129694868", MAPS="https://maps.app.goo.gl/WFd6LkwXZ2kAwPC89";
+const WA="918129694868", MAPS="https://maps.app.goo.gl/WFd6LkwXZ2kAwPC89";
 const BRANDS=["Maruti Suzuki","Hyundai","Honda","Tata","Mahindra","Renault","Kia","Toyota","Datsun","Ford","Volkswagen","Skoda"];
 const CARS=[{
   id:"grand-vitara-sigma", brand:"Maruti Suzuki", model:"Grand Vitara", variant:"Sigma", year:2023,
@@ -245,6 +246,8 @@ CARS.forEach(c=>{c.images=Array.from({length:c.photos},(_,k)=>`cars/${c.id}/${St
 
 /* ---------- helpers ---------- */
 const $=(s,r=document)=>r.querySelector(s);
+const waLink=t=>`https://wa.me/${WA}?text=${encodeURIComponent(t)}`;
+$("#wa-top").href=waLink("Hi WHEELZA, I saw your website and I am interested in a car.");
 const inr=n=>Math.round(n).toLocaleString("en-IN");
 const lakh=n=>(n/100000).toFixed(2).replace(/\.?0+$/,"")+" Lakh";
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -260,7 +263,7 @@ function listView(){
   const fuels=["Petrol","Diesel","CNG","Electric"], trs=["Manual","Automatic"];
   app.innerHTML=`
   <section class="strip full" aria-label="Welcome">
-    <div><h1>Pre-owned cars that feel brand new</h1><p>Hand-picked used cars with clear details, real photos and an EMI you can work out before you visit.</p></div>
+    <div><h1>Your next ride is waiting. Drive home happy.</h1><p>Real photos, clear prices and an EMI you can check before you visit. Pick a car, tap WhatsApp, and we will do the rest.</p></div>
     <img src="${CARS[0].images[0]}" alt="${CARS[0].year} ${CARS[0].brand} ${CARS[0].model}">
   </section>
   <div class="shop">
@@ -277,13 +280,13 @@ function listView(){
       <button class="pill hot apply" id="apply" type="button">Show cars</button>
     </aside>
     <section aria-live="polite">
-      <div class="bar"><h2>Cars for sale</h2><span class="count" id="count"></span>
+      <div class="bar"><h2>Fresh on the lot</h2><span class="count" id="count"></span>
         <button class="pill hot fbtn" id="ftoggle" type="button">Filters</button>
         <select class="in" id="sort" aria-label="Sort"><option value="new">Newest first</option><option value="lo">Price: low to high</option><option value="hi">Price: high to low</option><option value="km">Lowest km</option></select></div>
       <div class="grid" id="grid"></div>
     </section>
   </div>
-  <div class="foot"><span>© WHEELZA · Used cars</span><span>EMI shown assumes 20% down, 14% interest, 5 years.</span></div>`;
+  <div class="foot"><span>© WHEELZA · Pre-owned cars you can trust</span><span>EMI shown assumes 20% down, 14% interest, 5 years.</span></div>`;
   app.querySelectorAll("[data-k]").forEach(i=>i.onchange=()=>{const s=F[i.dataset.k];i.checked?s.add(i.value):s.delete(i.value);draw()});
   $("#pmin").oninput=e=>{F.min=e.target.value;draw()};$("#pmax").oninput=e=>{F.max=e.target.value;draw()};
   $("#yr").onchange=e=>{F.year=e.target.value;draw()};$("#ow").onchange=e=>{F.owner=e.target.value;draw()};
@@ -298,7 +301,7 @@ function draw(){
     &&(F.min===""||c.price>=F.min*1e5)&&(F.max===""||c.price<=F.max*1e5)&&(!F.year||c.year>=+F.year)&&(!F.owner||c.owner<=+F.owner));
   const s={new:(a,b)=>b.year-a.year,lo:(a,b)=>a.price-b.price,hi:(a,b)=>b.price-a.price,km:(a,b)=>a.km-b.km}[F.sort];r.sort(s);
   $("#count").textContent=r.length+(r.length===1?" car":" cars");const ap=$("#apply");if(ap)ap.textContent=`Show ${r.length} ${r.length===1?"car":"cars"}`;
-  $("#grid").innerHTML=r.length?r.map(card).join(""):`<div class="empty" style="grid-column:1/-1"><b>No cars match these filters</b>Try a wider price range or clear a filter.</div>`;
+  $("#grid").innerHTML=r.length?r.map(card).join(""):`<div class="empty" style="grid-column:1/-1"><b>Nothing here yet</b>Loosen a filter or widen the price range and your car will show up.</div>`;
   document.querySelectorAll(".heart").forEach(h=>h.onclick=e=>{e.preventDefault();e.stopPropagation();const id=h.dataset.id;favs.has(id)?favs.delete(id):favs.add(id);h.setAttribute("aria-pressed",favs.has(id))});
 }
 function card(c){
@@ -326,25 +329,25 @@ function carView(c){
         <div class="thumbs" id="th">${c.images.map((s,k)=>`<button type="button" data-i="${k}" aria-label="Photo ${k+1}"><img src="${s}" alt="" loading="lazy"></button>`).join("")}</div>
       </div>
       <div class="panel"><div class="head"><div><h1>${c.year} ${c.brand} ${c.model} ${c.variant}</h1><p>${c.fuel} · ${c.trans} · ${(c.km).toLocaleString("en-IN")} km · ${c.owner===1?"First owner":c.owner+" owners"}</p></div>
-        <div class="big">₹${inr(c.price)}<small>${lakh(c.price)} · negotiable on visit</small></div></div></div>
-      <div class="panel"><h2>Car details</h2><div class="specs">
+        <div class="big">₹${inr(c.price)}<small>${lakh(c.price)}</small></div></div></div>
+      <div class="panel"><h2>Under the hood and beyond</h2><div class="specs">
         ${[["Make",c.brand],["Model",c.model],["Variant",c.variant],["Year",c.year],["Fuel type",c.fuel],["Odometer",c.km.toLocaleString("en-IN")+" km"],["Transmission",c.trans],["Ownership",c.owner===1?"First owner":c.owner+" owners"],["Registration",c.reg+" (Kerala)"],["Colour",c.colour]].map(([k,v])=>`<div><small>${k}</small><b>${v}</b></div>`).join("")}</div></div>
-      <div class="panel"><h2>Added extras &amp; features</h2><ul class="feat">${c.features.map(f=>`<li>${esc(f)}</li>`).join("")}</ul></div>
+      <div class="panel"><h2>Extras that make it special</h2><ul class="feat">${c.features.map(f=>`<li>${esc(f)}</li>`).join("")}</ul></div>
     </div>
     <div class="side">
       <section class="emi" aria-label="EMI calculator">
-        <h2>EMI Calculator</h2><p class="sub">Car price ₹${inr(c.price)}</p>
+        <h2>EMI Calculator</h2><p class="sub">Car price ₹${inr(c.price)}. Plan your monthly ride.</p>
         <label for="dp">Down payment?</label><div class="pre"><span>₹</span><input class="in" id="dp" inputmode="numeric" value="${inr(c.price*0.2)}"></div>
         <label for="ir">Interest</label><div class="pre pct"><input class="in" id="ir" inputmode="decimal" value="14"><span>%</span></div>
         <label for="la">Loan amount?</label><div class="pre"><span>₹</span><input class="in" id="la" inputmode="numeric"></div>
         <label for="yrs">How many years?</label><select class="in" id="yrs">${[1,2,3,4,5,6,7].map(y=>`<option value="${y}"${y===5?" selected":""}>${y} ${y===1?"year":"years"}</option>`).join("")}</select>
-        <div class="out"><small>Your monthly EMI</small><div class="amt">₹<span id="o1">0</span> <i>/ month</i></div>
+        <div class="out"><small>You pay just</small><div class="amt">₹<span id="o1">0</span> <i>/ month</i></div>
           <dl><dt>Total interest</dt><dd id="o2"></dd><dt>Total payable</dt><dd id="o3"></dd></dl></div>
         <p class="note">Loan amount fills in as price minus down payment. You can change it. Final rates depend on the bank.</p>
       </section>
-      <section class="panel cta"><h2 style="margin:0">Interested? Talk to Sreerag</h2>
-        <div class="num">${PHONE}</div>
-        <div class="row"><a class="pill hot" href="tel:+91${PHONE}">Call Sreerag</a><a class="pill sun" href="${MAPS}" target="_blank" rel="noopener">Open location</a><button class="pill line" id="cp" type="button" style="background:var(--chip);color:var(--ink)">Copy number</button></div></section>
+      <section class="panel cta"><h2 style="margin:0">Love it? Let's talk.</h2>
+        <div class="num"><a href="tel:+918129694868" style="text-decoration:none">81296 94868</a><br><a href="tel:+919895563618" style="text-decoration:none">98955 63618</a></div>
+        <div class="row"><a class="pill wa" href="${waLink(`Hi WHEELZA, I am interested in the ${c.year} ${c.brand} ${c.model} ${c.variant} (₹${inr(c.price)}). Is it available?`)}" target="_blank" rel="noopener">WhatsApp about this car</a><a class="pill hot" href="tel:+918129694868">Call now</a><a class="pill sun" href="${MAPS}" target="_blank" rel="noopener">Visit us</a></div></section>
     </div>
   </div>`;
   const show=k=>{i=(k+n)%n;$("#main").src=c.images[i];$("#main").alt=`${c.model} photo ${i+1}`;$("#cn").textContent=`${i+1} / ${n}`;
@@ -373,7 +376,6 @@ function carView(c){
   const fromDp=()=>{la.value=inr(Math.max(0,c.price-num(dp.value)));calc()};
   dp.oninput=fromDp;dp.onblur=()=>fmt(dp);la.oninput=calc;la.onblur=()=>fmt(la);$("#ir").oninput=calc;$("#yrs").onchange=calc;
   fromDp();
-  $("#cp").onclick=async e=>{const b=e.target;try{await navigator.clipboard.writeText(PHONE);b.textContent="Copied"}catch(_){b.textContent=PHONE}setTimeout(()=>b.textContent="Copy number",1800)};
 }
 
 /* ---------- router ---------- */
