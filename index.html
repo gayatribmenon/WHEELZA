@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>WHEELZA</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: sticky contact bar on top, filter sidebar left, 3-up car cards right; car page = gallery + specs left, EMI + contact right */
+:root{
+  --bg:#F4F3F1; --surface:#FFFFFF; --ink:#232B3A; --muted:#6A7080; --line:#E3E2DE;
+  --brand:#2B3447; --accent:#C65D43; --accent-ink:#FFFFFF; --sun:#EADFC4; --chip:#F0EFEC;
+  --glow:#E4E6EC; --good:#3C7A5E;
+  --display:'Unbounded','Trebuchet MS',sans-serif; --body:'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#14171D; --surface:#1D222B; --ink:#ECEDF0; --muted:#9AA0AE; --line:#2B313C; --brand:#1A1F29;
+  --chip:#262C37; --glow:#2A303C; --accent:#D9745A; --sun:#CDBF9A; --good:#6DB08F; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#14171D; --surface:#1D222B; --ink:#ECEDF0; --muted:#9AA0AE; --line:#2B313C; --brand:#1A1F29;
+  --chip:#262C37; --glow:#2A303C; --accent:#D9745A; --sun:#CDBF9A; --good:#6DB08F; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;
+  padding-block:0 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--brand)}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.wrap{max-width:1240px;margin-inline:auto}
+.full{margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px)))}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--brand);color:#fff;
+  margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px)));
+  padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));
+  box-shadow:0 6px 24px -12px rgba(20,5,60,.7)}
+.top .wrap{display:flex;align-items:center;gap:12px 20px;flex-wrap:wrap}
+.logo{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:.04em;text-decoration:none;display:flex;align-items:center;gap:8px}
+.logo i{width:26px;height:26px;border-radius:50%;background:conic-gradient(var(--accent),var(--sun),var(--accent));display:grid;place-items:center}
+.logo i::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--brand)}
+.contact{margin-left:auto;display:flex;align-items:center;gap:8px 18px;flex-wrap:wrap;font-size:14px}
+.contact .who{display:flex;flex-direction:column;line-height:1.2}
+.contact .who small{opacity:.7;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.contact .who b{font-weight:700;font-size:15px}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:99px;text-decoration:none;font-weight:600;font-size:14px;border:0;cursor:pointer}
+.pill.sun{background:var(--sun);color:#2B2410}
+.stage img{cursor:zoom-in}
+.lb{position:fixed;inset:0;z-index:50;background:rgba(10,12,16,.94);display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.lb .trk{width:100%;height:100%;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;overscroll-behavior:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.lb .trk::-webkit-scrollbar{display:none}
+.lb .trk.z{overflow-x:hidden}
+.lb .sl{flex:0 0 100%;height:100%;scroll-snap-align:center;scroll-snap-stop:always;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.lb .sl img{max-width:100%;max-height:100%;object-fit:contain;cursor:zoom-in;user-select:none;-webkit-user-drag:none}
+.lb .sl.z{display:block;overflow:auto}
+.lb .sl.z img{max-width:none;max-height:none;width:200%;cursor:zoom-out}
+@media(prefers-reduced-motion:reduce){.lb .trk{scroll-behavior:auto}}
+.lb button{position:absolute;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.16);color:#fff;font-size:22px;cursor:pointer}
+.lb .x{top:max(12px,env(safe-area-inset-top,0px));right:max(12px,env(safe-area-inset-right,0px))}
+.lb .lp{left:max(12px,env(safe-area-inset-left,0px));top:50%;translate:0 -50%}
+.lb .ln{right:max(12px,env(safe-area-inset-right,0px));top:50%;translate:0 -50%}
+.lb .lc{position:absolute;bottom:max(12px,env(safe-area-inset-bottom,0px));left:50%;translate:-50% 0;color:#fff;font-size:13px;background:rgba(255,255,255,.16);border-radius:99px;padding:3px 14px}
+.pill.line{background:rgba(255,255,255,.12);color:#fff}
+.pill.hot{background:var(--accent);color:var(--accent-ink)}
+
+/* hero strip */
+.strip{margin-top:18px;border-radius:22px;overflow:hidden;position:relative;color:#fff;
+  background:var(--brand);display:grid;grid-template-columns:1.1fr 1fr;align-items:center;min-height:190px}
+.strip div{padding:24px 28px}
+.strip h1{font-family:var(--display);font-size:clamp(20px,3.2vw,32px);line-height:1.15;margin:0 0 8px;font-weight:800;text-wrap:balance}
+.strip p{margin:0;opacity:.85;max-width:44ch}
+.strip img{width:100%;height:100%;object-fit:cover;min-height:190px;mask-image:linear-gradient(90deg,transparent,#000 35%)}
+@media(max-width:700px){.strip{grid-template-columns:1fr}.strip img{height:160px;mask-image:linear-gradient(0deg,#000 60%,transparent)}}
+
+/* listing layout */
+.shop{display:grid;grid-template-columns:260px minmax(0,1fr);gap:24px;margin-top:22px;align-items:start}
+.filters{background:var(--surface);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:18px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px)}
+.filters h2{font-family:var(--display);font-size:14px;margin:0;display:flex;justify-content:space-between;align-items:center}
+.filters h2 button{background:none;border:0;color:var(--accent);font-weight:700;font-size:13px;cursor:pointer;font-family:var(--body)}
+.fg{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:12px}
+.fg>summary{font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;padding:4px 0}
+.fg>summary::-webkit-details-marker{display:none}
+.fg>summary::after{content:"";width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);rotate:45deg;translate:0 -2px;transition:rotate .2s}
+.fg[open]>summary::after{rotate:225deg;translate:0 2px}
+.fg[open]{gap:10px}
+.filters h2 span{display:flex;gap:8px;align-items:center}
+.fx,.apply,.scrim{display:none}
+.fx{width:36px;height:36px;border-radius:50%;border:0;background:var(--chip);cursor:pointer;color:var(--ink)!important}
+.scrim{position:fixed;inset:0;z-index:40;background:rgba(10,12,18,.55)}
+.chk{display:flex;align-items:center;gap:9px;cursor:pointer;font-size:14px}
+.chk input{accent-color:var(--accent);width:17px;height:17px}
+.chk em{margin-left:auto;font-style:normal;color:var(--muted);font-size:12px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.in{width:100%;background:var(--chip);border:1.5px solid transparent;border-radius:12px;padding:9px 12px;min-width:0}
+.in:focus{border-color:var(--accent);outline:none}
+.fbtn{display:none}
+.filters{max-height:calc(100vh - 100px);overflow-y:auto}
+@media(max-width:900px){
+  .shop{grid-template-columns:1fr}
+  .filters{position:fixed;z-index:41;top:0;bottom:0;left:0;width:min(88vw,340px);border-radius:0 22px 22px 0;overflow-y:auto;
+    padding:max(18px,env(safe-area-inset-top,0px)) 18px max(18px,env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));
+    max-height:none;translate:-105% 0;transition:translate .28s ease;box-shadow:0 0 40px rgba(0,0,0,.35);visibility:hidden}
+  .filters.open{translate:0 0;visibility:visible}
+  .scrim.open{display:block}
+  .fx{display:grid;place-items:center}
+  .apply{display:inline-flex;justify-content:center;position:sticky;bottom:0;padding:13px;font-size:15px}
+  .fbtn{display:inline-flex}
+  .bar .in{margin-left:0}
+}
+.bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.bar h2{margin:0;font-family:var(--display);font-size:18px}
+.bar .count{color:var(--muted);font-size:14px}
+.bar .in{width:auto;margin-left:auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px}
+
+/* car card */
+.card{background:var(--surface);border-radius:22px;overflow:hidden;text-decoration:none;display:flex;flex-direction:column;
+  box-shadow:0 1px 0 var(--line);transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-4px);box-shadow:0 18px 36px -18px rgba(42,15,107,.55)}
+.card .ph{aspect-ratio:16/9;background:radial-gradient(120% 90% at 50% 0%,var(--glow),transparent 70%),linear-gradient(180deg,var(--chip),var(--surface));position:relative}
+.card .ph img{width:100%;height:100%;object-fit:cover}
+.heart{position:absolute;top:12px;right:12px;width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.9);color:#2A0F6B;cursor:pointer;display:grid;place-items:center}
+.heart[aria-pressed="true"]{background:var(--accent);color:#fff}
+.heart svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2}
+.heart[aria-pressed="true"] svg{fill:currentColor}
+.card .bd{padding:14px 18px 12px;display:flex;flex-direction:column;gap:8px}
+.l1{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.l1 h3{margin:0;font-size:19px;font-weight:700;color:var(--ink)}
+.l1 .pr{font-family:var(--display);font-size:17px;font-weight:800;color:var(--accent)}
+.l2{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:14px;flex-wrap:wrap}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips span{background:var(--chip);border-radius:99px;padding:3px 11px;font-size:13px;color:var(--muted)}
+.loc{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);gap:8px}
+.loc b{color:var(--brand);background:var(--sun);border-radius:6px;padding:1px 8px;font-size:12px}
+:root[data-theme="dark"] .loc b{color:#2A1500}
+.tag{border-top:1px solid var(--line);padding:11px 18px;font-size:14px;font-weight:600;color:var(--good);display:flex;gap:8px;align-items:center}
+.empty{background:var(--surface);border-radius:20px;padding:40px 24px;text-align:center;color:var(--muted)}
+.empty b{display:block;color:var(--ink);font-size:18px;margin-bottom:4px}
+
+/* car page */
+.back{display:inline-flex;gap:6px;margin:18px 0 12px;font-weight:600;text-decoration:none;color:var(--muted)}
+.back:hover{color:var(--accent)}
+.car{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr);gap:24px;align-items:start}
+@media(max-width:960px){.car{grid-template-columns:1fr}}
+.stack{display:flex;flex-direction:column;gap:20px;min-width:0}
+.panel{background:var(--surface);border-radius:22px;padding:22px}
+.panel h2{font-family:var(--display);font-size:16px;margin:0 0 14px}
+.gal{background:var(--surface);border-radius:22px;overflow:hidden}
+.stage{position:relative;aspect-ratio:16/9;background:radial-gradient(100% 80% at 50% 0%,var(--glow),var(--chip));display:grid;place-items:center}
+.stage img{width:100%;height:100%;object-fit:contain}
+.nav{position:absolute;top:50%;translate:0 -50%;width:42px;height:42px;border-radius:50%;border:0;background:rgba(27,11,69,.78);color:#fff;font-size:20px;cursor:pointer}
+.nav.p{left:12px}.nav.n{right:12px}
+.cnt{position:absolute;right:12px;bottom:12px;background:rgba(27,11,69,.78);color:#fff;border-radius:99px;padding:3px 12px;font-size:12px}
+.thumbs{display:flex;gap:8px;padding:10px;overflow-x:auto}
+.thumbs button{flex:0 0 84px;aspect-ratio:16/10;border-radius:10px;overflow:hidden;border:2px solid transparent;padding:0;background:var(--chip);cursor:pointer;opacity:.7}
+.thumbs button[aria-current="true"]{border-color:var(--accent);opacity:1}
+.thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.head{display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between;align-items:flex-end}
+.head h1{margin:0;font-family:var(--display);font-size:clamp(20px,3vw,28px);line-height:1.15;text-wrap:balance}
+.head p{margin:4px 0 0;color:var(--muted)}
+.head .big{font-family:var(--display);font-weight:800;font-size:clamp(24px,3.4vw,34px);color:var(--accent);white-space:nowrap}
+.head .big small{display:block;font-family:var(--body);font-size:12px;font-weight:500;color:var(--muted);text-align:right}
+.specs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.specs div{background:var(--chip);border-radius:14px;padding:12px 14px}
+.specs small{display:block;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.specs b{font-size:16px}
+.feat{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.feat li{display:flex;gap:10px;align-items:center;font-weight:500}
+.feat li::before{content:"✓";flex:0 0 24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:800}
+.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px);display:flex;flex-direction:column;gap:20px;min-width:0}
+@media(max-width:960px){.side{position:static}}
+.emi{background:var(--brand);color:#fff;border-radius:22px;padding:22px}
+.emi h2{font-family:var(--display);font-size:16px;margin:0 0 4px}
+.emi .sub{opacity:.75;font-size:13px;margin:0 0 16px}
+.emi label{display:block;font-size:12px;font-weight:600;opacity:.85;margin:12px 0 5px}
+.emi .in{background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.18)}
+.emi .in:focus{border-color:var(--sun)}
+.emi select.in option{color:#1B0B45}
+.pre{position:relative}
+.pre span{position:absolute;left:12px;top:50%;translate:0 -50%;opacity:.8}
+.pre input{padding-left:28px}
+.pre.pct input{padding-left:12px;padding-right:30px}
+.pre.pct span{left:auto;right:12px}
+.out{margin-top:18px;background:var(--sun);color:#2A1500;border-radius:16px;padding:16px}
+.out small{font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
+.out .amt{font-family:var(--display);font-size:30px;font-weight:800;line-height:1.2}
+.out .amt i{font-style:normal;font-size:14px;font-family:var(--body);font-weight:600}
+.out dl{display:grid;grid-template-columns:1fr auto;gap:2px 12px;margin:10px 0 0;font-size:13px}
+.out dd{margin:0;font-weight:700;text-align:right}
+.note{font-size:12px;opacity:.7;margin:10px 0 0}
+.cta{display:flex;flex-direction:column;gap:10px}
+.cta .num{font-family:var(--display);font-size:22px;font-weight:800;word-break:break-all}
+.cta .row{display:flex;gap:8px;flex-wrap:wrap}
+@media(max-width:600px){
+  body{font-size:15px}
+  .top{padding-block:8px;position:relative}
+  .logo{font-size:19px}
+  .contact{margin-left:0;width:100%;justify-content:space-between;gap:8px}
+  .contact .pill{padding:9px 12px;font-size:13px}
+  .contact .who b{font-size:14px}
+  .strip div{padding:18px}
+  .grid{grid-template-columns:1fr}
+  .bar .in{flex:1 1 140px}
+  .fbtn{padding:10px 16px}
+  .panel,.emi{padding:18px;border-radius:18px}
+  .head .big small{text-align:left}
+  .cta .row .pill{flex:1 1 40%;justify-content:center}
+  .nav{width:38px;height:38px}
+  .in,.emi .in,select{font-size:16px}
+}
+.foot{margin-top:36px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+</style>
+<style>html{color-scheme:light dark}body{margin:0;font-family:var(--body)}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#" aria-label="WHEELZA home"><i></i>WHEELZA</a>
+    <div class="contact" id="contact">
+      <div class="who"><small>Contact us · Sales</small><b>Sreerag · 8129694868</b></div>
+      <a class="pill sun" href="tel:+918129694868">Call now</a>
+      <a class="pill line" href="https://maps.app.goo.gl/WFd6LkwXZ2kAwPC89" target="_blank" rel="noopener">Find us on map</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="app"></main>
+
+<script>
+/* ---------- DATA: add more cars here and they appear in the list + filters ---------- */
+const PHONE="8129694868", MAPS="https://maps.app.goo.gl/WFd6LkwXZ2kAwPC89";
+const BRANDS=["Maruti Suzuki","Hyundai","Honda","Tata","Mahindra","Renault","Kia","Toyota","Datsun","Ford","Volkswagen","Skoda"];
+const IMG=n=>"car-"+String(n).padStart(2,"0")+".jpg";
+const CARS=[{
+  id:"grand-vitara-sigma", brand:"Maruti Suzuki", model:"Grand Vitara", variant:"Sigma", year:2023,
+  price:1045000, km:30000, fuel:"Petrol", trans:"Manual", owner:1, reg:"KL41", colour:"Silver",
+  features:["Alloy wheels added","Alpine speakers","Blaupunkt touchscreen stereo","4-door sound damping","Tan seat covers","First owner"],
+  tagline:"Alloys + Alpine sound added",
+  images:["cover.jpg",IMG(5),IMG(4),IMG(2),IMG(3),IMG(1),IMG(7),IMG(15),IMG(6),IMG(13),IMG(14),IMG(16),IMG(8),IMG(11),IMG(9),IMG(12),IMG(17),IMG(10),IMG(18)]
+}];
+
+/* ---------- helpers ---------- */
+const $=(s,r=document)=>r.querySelector(s);
+const inr=n=>Math.round(n).toLocaleString("en-IN");
+const lakh=n=>(n/100000).toFixed(2).replace(/\.?0+$/,"")+" Lakh";
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function emiOf(P,rate,months){const r=rate/1200;if(P<=0||months<=0)return 0;if(r===0)return P/months;const f=Math.pow(1+r,months);return P*r*f/(f-1)}
+const defEmi=c=>emiOf(c.price*0.8,14,60);
+let favs=new Set();
+const app=$("#app");
+
+/* ---------- list view ---------- */
+const F={brands:new Set(),fuels:new Set(),trans:new Set(),min:"",max:"",year:"",owner:"",sort:"new"};
+function listView(){
+  const bc=b=>CARS.filter(c=>c.brand===b).length;
+  const fuels=["Petrol","Diesel","CNG","Electric"], trs=["Manual","Automatic"];
+  app.innerHTML=`
+  <section class="strip full" aria-label="Welcome">
+    <div><h1>Pre-owned cars that feel brand new</h1><p>Hand-picked used cars with clear details, real photos and an EMI you can work out before you visit.</p></div>
+    <img src="cover.jpg" alt="Silver Maruti Suzuki Grand Vitara">
+  </section>
+  <div class="shop">
+    <div class="scrim" id="scrim"></div>
+    <aside class="filters" id="filters" aria-label="Filters">
+      <h2>Filters <span><button id="reset" type="button">Reset</button><button id="fclose" class="fx" type="button" aria-label="Close filters">✕</button></span></h2>
+      <details class="fg" open><summary>Brand</summary>${BRANDS.map(b=>`<label class="chk"><input type="checkbox" data-k="brands" value="${b}"> ${b}<em>${bc(b)}</em></label>`).join("")}</details>
+      <details class="fg" open><summary>Price range (₹ Lakh)</summary><div class="row2"><input class="in" id="pmin" type="number" min="0" step="0.5" placeholder="Min" aria-label="Minimum price in lakh"><input class="in" id="pmax" type="number" min="0" step="0.5" placeholder="Max" aria-label="Maximum price in lakh"></div></details>
+      <details class="fg"><summary>Year</summary><select class="in" id="yr"><option value="">Any year</option>${[2024,2023,2022,2021,2020,2018,2016,2014].map(y=>`<option value="${y}">${y} &amp; newer</option>`).join("")}</select></details>
+      <details class="fg"><summary>Fuel</summary>${fuels.map(f=>`<label class="chk"><input type="checkbox" data-k="fuels" value="${f}"> ${f}</label>`).join("")}</details>
+      <details class="fg"><summary>Transmission</summary>${trs.map(f=>`<label class="chk"><input type="checkbox" data-k="trans" value="${f}"> ${f}</label>`).join("")}</details>
+      <details class="fg"><summary>Owners</summary><select class="in" id="ow"><option value="">Any</option><option value="1">First owner only</option></select></details>
+      <button class="pill hot apply" id="apply" type="button">Show cars</button>
+    </aside>
+    <section aria-live="polite">
+      <div class="bar"><h2>Cars for sale</h2><span class="count" id="count"></span>
+        <button class="pill hot fbtn" id="ftoggle" type="button">Filters</button>
+        <select class="in" id="sort" aria-label="Sort"><option value="new">Newest first</option><option value="lo">Price: low to high</option><option value="hi">Price: high to low</option><option value="km">Lowest km</option></select></div>
+      <div class="grid" id="grid"></div>
+    </section>
+  </div>
+  <div class="foot"><span>© WHEELZA · Used cars</span><span>EMI shown assumes 20% down, 14% interest, 5 years.</span></div>`;
+  app.querySelectorAll("[data-k]").forEach(i=>i.onchange=()=>{const s=F[i.dataset.k];i.checked?s.add(i.value):s.delete(i.value);draw()});
+  $("#pmin").oninput=e=>{F.min=e.target.value;draw()};$("#pmax").oninput=e=>{F.max=e.target.value;draw()};
+  $("#yr").onchange=e=>{F.year=e.target.value;draw()};$("#ow").onchange=e=>{F.owner=e.target.value;draw()};
+  $("#sort").onchange=e=>{F.sort=e.target.value;draw()};
+  const fo=o=>{$("#filters").classList.toggle("open",o);$("#scrim").classList.toggle("open",o);document.body.style.overflow=o?"hidden":""};
+  $("#ftoggle").onclick=()=>fo(true);$("#fclose").onclick=()=>fo(false);$("#scrim").onclick=()=>fo(false);$("#apply").onclick=()=>fo(false);
+  $("#reset").onclick=()=>{F.brands.clear();F.fuels.clear();F.trans.clear();Object.assign(F,{min:"",max:"",year:"",owner:"",sort:"new"});listView()};
+  draw();
+}
+function draw(){
+  let r=CARS.filter(c=>(!F.brands.size||F.brands.has(c.brand))&&(!F.fuels.size||F.fuels.has(c.fuel))&&(!F.trans.size||F.trans.has(c.trans))
+    &&(F.min===""||c.price>=F.min*1e5)&&(F.max===""||c.price<=F.max*1e5)&&(!F.year||c.year>=+F.year)&&(!F.owner||c.owner<=+F.owner));
+  const s={new:(a,b)=>b.year-a.year,lo:(a,b)=>a.price-b.price,hi:(a,b)=>b.price-a.price,km:(a,b)=>a.km-b.km}[F.sort];r.sort(s);
+  $("#count").textContent=r.length+(r.length===1?" car":" cars");const ap=$("#apply");if(ap)ap.textContent=`Show ${r.length} ${r.length===1?"car":"cars"}`;
+  $("#grid").innerHTML=r.length?r.map(card).join(""):`<div class="empty" style="grid-column:1/-1"><b>No cars match these filters</b>Try a wider price range or clear a filter.</div>`;
+  document.querySelectorAll(".heart").forEach(h=>h.onclick=e=>{e.preventDefault();e.stopPropagation();const id=h.dataset.id;favs.has(id)?favs.delete(id):favs.add(id);h.setAttribute("aria-pressed",favs.has(id))});
+}
+function card(c){
+  return `<a class="card" href="#${c.id}">
+    <div class="ph"><img src="${c.images[0]}" alt="${c.year} ${c.brand} ${c.model}" loading="lazy">
+      <button class="heart" data-id="${c.id}" aria-pressed="${favs.has(c.id)}" aria-label="Save this car" type="button"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.5-9.3C1.1 8.3 3 5 6.3 5c2 0 3.7 1.1 5.7 3.3C14 6.1 15.700 5 17.700 5 21 5 22.900 8.300 21.500 11.700 19.500 16.400 12 21 12 21z"/></svg></button></div>
+    <div class="bd">
+      <div class="l1"><h3>${c.year} ${c.brand} ${c.model}</h3><span class="pr">₹${lakh(c.price)}</span></div>
+      <div class="l2"><span>${c.variant}</span><span>EMI ₹${inr(defEmi(c))}/m*</span></div>
+      <div class="chips"><span>${(c.km/1000).toFixed(c.km%1000?1:0)}K km</span><span>${c.fuel}</span><span>${c.trans}</span><span>${c.reg}</span></div>
+      <div class="loc"><span>WHEELZA showroom</span><b>${c.owner===1?"1st owner":c.owner+" owners"}</b></div>
+    </div>
+    <div class="tag">◆ ${esc(c.tagline)}</div></a>`;
+}
+
+/* ---------- car page ---------- */
+function carView(c){
+  let i=0;const n=c.images.length;
+  app.innerHTML=`
+  <a class="back" href="#">← All cars</a>
+  <div class="car">
+    <div class="stack">
+      <div class="gal">
+        <div class="stage"><img id="main" alt=""><button class="nav p" id="pv" aria-label="Previous photo" type="button">‹</button><button class="nav n" id="nx" aria-label="Next photo" type="button">›</button><span class="cnt" id="cn"></span></div>
+        <div class="thumbs" id="th">${c.images.map((s,k)=>`<button type="button" data-i="${k}" aria-label="Photo ${k+1}"><img src="${s}" alt="" loading="lazy"></button>`).join("")}</div>
+      </div>
+      <div class="panel"><div class="head"><div><h1>${c.year} ${c.brand} ${c.model} ${c.variant}</h1><p>${c.fuel} · ${c.trans} · ${(c.km).toLocaleString("en-IN")} km · ${c.owner===1?"First owner":c.owner+" owners"}</p></div>
+        <div class="big">₹${inr(c.price)}<small>${lakh(c.price)} · negotiable on visit</small></div></div></div>
+      <div class="panel"><h2>Car details</h2><div class="specs">
+        ${[["Make",c.brand],["Model",c.model],["Variant",c.variant],["Year",c.year],["Fuel type",c.fuel],["Odometer",c.km.toLocaleString("en-IN")+" km"],["Transmission",c.trans],["Ownership",c.owner===1?"First owner":c.owner+" owners"],["Registration",c.reg+" (Kerala)"],["Colour",c.colour]].map(([k,v])=>`<div><small>${k}</small><b>${v}</b></div>`).join("")}</div></div>
+      <div class="panel"><h2>Added extras &amp; features</h2><ul class="feat">${c.features.map(f=>`<li>${esc(f)}</li>`).join("")}</ul></div>
+    </div>
+    <div class="side">
+      <section class="emi" aria-label="EMI calculator">
+        <h2>EMI Calculator</h2><p class="sub">Car price ₹${inr(c.price)}</p>
+        <label for="dp">Down payment?</label><div class="pre"><span>₹</span><input class="in" id="dp" inputmode="numeric" value="${inr(c.price*0.2)}"></div>
+        <label for="ir">Interest</label><div class="pre pct"><input class="in" id="ir" inputmode="decimal" value="14"><span>%</span></div>
+        <label for="la">Loan amount?</label><div class="pre"><span>₹</span><input class="in" id="la" inputmode="numeric"></div>
+        <label for="yrs">How many years?</label><select class="in" id="yrs">${[1,2,3,4,5,6,7].map(y=>`<option value="${y}"${y===5?" selected":""}>${y} ${y===1?"year":"years"}</option>`).join("")}</select>
+        <div class="out"><small>Your monthly EMI</small><div class="amt">₹<span id="o1">0</span> <i>/ month</i></div>
+          <dl><dt>Total interest</dt><dd id="o2"></dd><dt>Total payable</dt><dd id="o3"></dd></dl></div>
+        <p class="note">Loan amount fills in as price minus down payment. You can change it. Final rates depend on the bank.</p>
+      </section>
+      <section class="panel cta"><h2 style="margin:0">Interested? Talk to Sreerag</h2>
+        <div class="num">${PHONE}</div>
+        <div class="row"><a class="pill hot" href="tel:+91${PHONE}">Call Sreerag</a><a class="pill sun" href="${MAPS}" target="_blank" rel="noopener">Open location</a><button class="pill line" id="cp" type="button" style="background:var(--chip);color:var(--ink)">Copy number</button></div></section>
+    </div>
+  </div>`;
+  const show=k=>{i=(k+n)%n;$("#main").src=c.images[i];$("#main").alt=`${c.model} photo ${i+1}`;$("#cn").textContent=`${i+1} / ${n}`;
+    document.querySelectorAll("#th button").forEach((b,j)=>{b.setAttribute("aria-current",j===i);if(j===i)b.scrollIntoView({block:"nearest",inline:"center"})})};
+  $("#pv").onclick=()=>show(i-1);$("#nx").onclick=()=>show(i+1);
+  let lb=null,trk=null;
+  const lbClose=()=>{lb&&lb.remove();lb=null;trk=null;document.body.style.overflow=""};
+  const lbGo=d=>{if(!trk)return;trk.classList.remove("z");trk.querySelectorAll(".sl.z").forEach(x=>x.classList.remove("z"));trk.scrollTo({left:((i+d+n)%n)*trk.clientWidth,behavior:"smooth"})};
+  const lbOpen=()=>{lb=document.createElement("div");lb.className="lb";lb.setAttribute("role","dialog");lb.setAttribute("aria-label","Photo viewer");
+    lb.innerHTML=`<div class="trk">${c.images.map((s,k)=>`<div class="sl"><img src="${s}" alt="${esc(c.model)} photo ${k+1}" decoding="async"${Math.abs(k-i)>1?' loading="lazy"':''}></div>`).join("")}</div><button class="x" type="button" aria-label="Close">✕</button><button class="lp" type="button" aria-label="Previous photo">‹</button><button class="ln" type="button" aria-label="Next photo">›</button><span class="lc"></span>`;
+    document.body.appendChild(lb);document.body.style.overflow="hidden";
+    trk=$(".trk",lb);const lc=$(".lc",lb);lc.textContent=`${i+1} / ${n}`;
+    trk.style.scrollBehavior="auto";trk.scrollLeft=i*trk.clientWidth;requestAnimationFrame(()=>trk.style.scrollBehavior="");
+    let t;trk.addEventListener("scroll",()=>{clearTimeout(t);t=setTimeout(()=>{const k=Math.round(trk.scrollLeft/trk.clientWidth);if(k!==i&&k>=0&&k<n){show(k)}lc.textContent=`${i+1} / ${n}`},60)});
+    trk.addEventListener("click",e=>{const sl=e.target.closest(".sl");if(!sl)return;if(e.target.tagName==="IMG"){const z=sl.classList.toggle("z");trk.classList.toggle("z",z)}else lbClose()});
+    $(".x",lb).onclick=lbClose;$(".lp",lb).onclick=()=>lbGo(-1);$(".ln",lb).onclick=()=>lbGo(1);$(".x",lb).focus()};
+  $("#main").onclick=lbOpen;
+  const base=e=>{if(e.key==="ArrowLeft"){lb?lbGo(-1):show(i-1)}if(e.key==="ArrowRight"){lb?lbGo(1):show(i+1)}if(e.key==="Escape")lbClose()};
+  document.querySelectorAll("#th button").forEach(b=>b.onclick=()=>show(+b.dataset.i));
+  carView.key=base;carView.close=lbClose;
+  show(0);
+  const num=v=>+String(v).replace(/[^0-9.]/g,"")||0, dp=$("#dp"), la=$("#la");
+  const fmt=el=>{const v=num(el.value);el.value=v?inr(v):""};
+  const calc=()=>{const L=num(la.value),r=num($("#ir").value),m=+$("#yrs").value*12,e=emiOf(L,r,m);
+    $("#o1").textContent=inr(e);$("#o2").textContent="₹"+inr(e*m-L);$("#o3").textContent="₹"+inr(e*m)};
+  const fromDp=()=>{la.value=inr(Math.max(0,c.price-num(dp.value)));calc()};
+  dp.oninput=fromDp;dp.onblur=()=>fmt(dp);la.oninput=calc;la.onblur=()=>fmt(la);$("#ir").oninput=calc;$("#yrs").onchange=calc;
+  fromDp();
+  $("#cp").onclick=async e=>{const b=e.target;try{await navigator.clipboard.writeText(PHONE);b.textContent="Copied"}catch(_){b.textContent=PHONE}setTimeout(()=>b.textContent="Copy number",1800)};
+}
+
+/* ---------- router ---------- */
+addEventListener("keydown",e=>carView.key&&carView.key(e));
+function route(){
+  const id=location.hash.slice(1),c=CARS.find(x=>x.id===id);
+  carView.close&&carView.close();carView.close=null;carView.key=null;
+  c?carView(c):listView();
+  scrollTo(0,0);
+  document.title=c?`${c.year} ${c.brand} ${c.model} | WHEELZA`:"WHEELZA";
+}
+addEventListener("hashchange",route);route();
+</script>
+</body>
+</html>
