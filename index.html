@@ -229,17 +229,19 @@ button,input,select{font:inherit;color:inherit}
 <main class="wrap" id="app"></main>
 
 <script>
-/* ---------- DATA: add more cars here and they appear in the list + filters ---------- */
+/* ---------- DATA: add more cars here and they appear in the list + filters ----------
+   PHOTOS: every car has its own folder  cars/<id>/  holding 01.jpg, 02.jpg, 03.jpg ...
+   01.jpg is the cover photo. Set "photos" to how many pictures are in the folder. */
 const PHONE="8129694868", MAPS="https://maps.app.goo.gl/WFd6LkwXZ2kAwPC89";
 const BRANDS=["Maruti Suzuki","Hyundai","Honda","Tata","Mahindra","Renault","Kia","Toyota","Datsun","Ford","Volkswagen","Skoda"];
-const IMG=n=>"car-"+String(n).padStart(2,"0")+".jpg";
 const CARS=[{
   id:"grand-vitara-sigma", brand:"Maruti Suzuki", model:"Grand Vitara", variant:"Sigma", year:2023,
   price:1045000, km:30000, fuel:"Petrol", trans:"Manual", owner:1, reg:"KL41", colour:"Silver",
   features:["Alloy wheels added","Alpine speakers","Blaupunkt touchscreen stereo","4-door sound damping","Tan seat covers","First owner"],
   tagline:"Alloys + Alpine sound added",
-  images:["cover.jpg",IMG(4),IMG(2),IMG(3),IMG(1),IMG(7),IMG(15),IMG(6),IMG(13),IMG(14),IMG(16),IMG(8),IMG(11),IMG(9),IMG(12),IMG(17),IMG(10),IMG(18)]
+  photos:18
 }];
+CARS.forEach(c=>{c.images=Array.from({length:c.photos},(_,k)=>`cars/${c.id}/${String(k+1).padStart(2,"0")}.jpg`)});
 
 /* ---------- helpers ---------- */
 const $=(s,r=document)=>r.querySelector(s);
@@ -259,7 +261,7 @@ function listView(){
   app.innerHTML=`
   <section class="strip full" aria-label="Welcome">
     <div><h1>Pre-owned cars that feel brand new</h1><p>Hand-picked used cars with clear details, real photos and an EMI you can work out before you visit.</p></div>
-    <img src="cover.jpg" alt="Silver Maruti Suzuki Grand Vitara">
+    <img src="${CARS[0].images[0]}" alt="${CARS[0].year} ${CARS[0].brand} ${CARS[0].model}">
   </section>
   <div class="shop">
     <button class="ftab" id="ftab" type="button" aria-label="Open filters">Filters</button>
