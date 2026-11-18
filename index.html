@@ -44,6 +44,7 @@ button,input,select{font:inherit;color:inherit}
 .top .nums{display:flex;flex-direction:column;line-height:1.25;font-weight:700;font-size:15px}
 .top .nums small{opacity:.85;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
 .top .nums a{text-decoration:none}
+.acts{display:flex;align-items:center;gap:8px}
 .stage img{cursor:zoom-in}
 .lb{position:fixed;inset:0;z-index:50;background:rgba(10,12,16,.94);display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
 .lb .trk{width:100%;height:100%;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;overscroll-behavior:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
@@ -65,7 +66,9 @@ button,input,select{font:inherit;color:inherit}
 /* hero strip */
 .strip{margin-top:18px;border-radius:22px;overflow:hidden;position:relative;color:#fff;
   background:linear-gradient(110deg,var(--brand) 20%,var(--brand2));display:grid;grid-template-columns:1.1fr 1fr;align-items:center;min-height:190px}
-.strip div{padding:24px 28px}
+.strip>div{padding:24px 28px}
+.strip-cta{margin-top:16px}
+.strip .pill{background:#fff;color:var(--brand);font-size:15px;padding:11px 20px}
 .strip h1{font-family:var(--display);font-size:clamp(20px,3.2vw,32px);line-height:1.15;margin:0 0 8px;font-weight:800;text-wrap:balance}
 .strip p{margin:0;opacity:.85;max-width:44ch}
 .strip img{width:100%;height:100%;object-fit:cover;min-height:190px;mask-image:linear-gradient(90deg,transparent,#000 35%)}
@@ -197,13 +200,13 @@ button,input,select{font:inherit;color:inherit}
   .top .wrap{display:grid;grid-template-columns:1fr auto;grid-template-areas:"logo wa" "nums nums";gap:8px 12px;align-items:center}
   .contact{display:contents}
   .logo{grid-area:logo;font-size:19px}
-  #wa-top{grid-area:wa}
+  .acts{grid-area:wa}
   .top .nums{grid-area:nums;flex-direction:row;align-items:center;gap:8px;font-size:14px;border-top:1px solid rgba(255,255,255,.28);padding-top:8px}
   .top .nums small{font-size:10px}
   .find{display:none}
   .pill{min-height:44px;justify-content:center}
   .strip{margin-top:14px}
-  .strip div{padding:20px 18px 6px}
+  .strip>div{padding:20px 18px 6px}
   .grid{grid-template-columns:1fr}
   .bar .in{flex:1 1 140px}
   .panel,.emi{padding:18px;border-radius:18px}
@@ -239,9 +242,41 @@ button,input,select{font:inherit;color:inherit}
 .sf-col small{font-size:11px;letter-spacing:.09em;text-transform:uppercase;opacity:.8;font-weight:700}
 .sf-col a{color:#fff;font-weight:600;text-decoration:none;padding:3px 0}
 .sf-col a:hover{text-decoration:underline}
+.card.is-sold .ph img{filter:grayscale(.85);opacity:.75}
+.card.is-sold .pr{color:var(--muted)}
+.card.is-sold .tag{color:var(--muted)}
+.sold{position:absolute;left:12px;top:12px;background:#33190A;color:#fff;font-weight:800;letter-spacing:.12em;font-size:12px;padding:5px 12px;border-radius:99px}
+.soldbar{display:flex;gap:10px 16px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--chip);border:1px dashed var(--brand2);border-radius:14px;padding:12px 14px;margin-bottom:16px}
+.soldbar b{background:#33190A;color:#fff;border-radius:99px;padding:2px 10px;font-size:12px;letter-spacing:.1em;margin-right:6px}
+.car.is-sold .emi,.car.is-sold .cta{display:none}
+/* registration popup */
+.modal{position:fixed;inset:0;z-index:60;background:rgba(40,16,2,.62);display:flex;align-items:center;justify-content:center;
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));overflow-y:auto}
+.sheet{position:relative;background:#fff;border-radius:24px;width:100%;max-width:440px;max-height:100%;overflow-y:auto;padding:26px 24px 22px;box-shadow:0 30px 80px -20px rgba(0,0,0,.55);display:flex;flex-direction:column;gap:6px}
+.sheet::before{content:"";position:absolute;inset:0 0 auto;height:8px;background:linear-gradient(90deg,var(--brand),var(--brand2));border-radius:24px 24px 0 0}
+.sheet h2{font-family:var(--display);font-size:20px;line-height:1.2;margin:6px 34px 0 0;color:var(--brand)}
+.sheet .sub{margin:0 0 8px;color:var(--muted);font-size:14px}
+.sheet label{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+.sheet label.consent{text-transform:none;letter-spacing:0;font-weight:500;font-size:13px;color:var(--ink);display:flex;gap:9px;align-items:flex-start;cursor:pointer;margin-top:12px}
+.sheet label.consent input{width:18px;height:18px;accent-color:var(--brand);margin-top:1px;flex:none}
+.sheet input[type=text],.sheet input[type=tel]{width:100%;background:var(--chip);border:1.5px solid transparent;border-radius:12px;padding:12px;font-size:16px;color:var(--ink);min-width:0}
+.sheet input.bad{border-color:#C0262D}
+.sheet input:focus{border-color:var(--brand);outline:none}
+.hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;opacity:0}
+.err{color:#B3202A;font-size:13px;font-weight:600;margin:6px 0 0;min-height:0}
+.err:empty{display:none}
+.mx{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:50%;border:0;background:var(--chip);color:var(--ink);cursor:pointer;font-size:16px}
+.big{width:100%;justify-content:center;min-height:48px;font-size:16px;margin-top:12px}
+.skip{background:none;border:0;color:var(--muted);font-weight:600;padding:10px;cursor:pointer;text-decoration:underline}
+.thanks{text-align:center;padding:10px 0 4px}
+.thanks .tick{width:64px;height:64px;border-radius:50%;background:var(--good);color:#fff;display:grid;place-items:center;font-size:32px;margin:6px auto 12px}
+.thanks h2{margin:0 0 6px}
+.thanks p{color:var(--muted);margin:0 0 14px}
 .foot{margin-top:36px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 </style>
 <style>html{color-scheme:light}body{margin:0;font-family:var(--body)}img{max-width:100%}[hidden]{display:none!important}</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
 </head>
 <body>
 <header class="top">
@@ -249,13 +284,46 @@ button,input,select{font:inherit;color:inherit}
     <a class="logo" href="#" aria-label="WHEELZA home"><i></i>WHEELZA</a>
     <div class="contact" id="contact">
       <div class="nums"><small>Call us</small><span><a href="tel:+918129694868">81296 94868</a> · <a href="tel:+919895563618">98955 63618</a></span></div>
-      <a class="pill wa" id="wa-top" href="#" target="_blank" rel="noopener">WhatsApp us</a>
-      <a class="pill line find" href="https://maps.app.goo.gl/WFd6LkwXZ2kAwPC89" target="_blank" rel="noopener">Find us</a>
+      <div class="acts">
+        <button class="pill sun" id="reg-top" type="button" data-reg="auto">Register</button>
+        <a class="pill wa" id="wa-top" href="#" target="_blank" rel="noopener">WhatsApp</a>
+        <a class="pill line find" href="https://maps.app.goo.gl/WFd6LkwXZ2kAwPC89" target="_blank" rel="noopener">Find us</a>
+      </div>
     </div>
   </div>
 </header>
 
 <main class="wrap" id="app"></main>
+
+<div class="modal" id="regm" role="dialog" aria-modal="true" aria-labelledby="regt" hidden>
+  <form class="sheet" id="regf" novalidate autocomplete="on">
+    <button class="mx" id="regx" type="button" aria-label="Close">✕</button>
+    <h2 id="regt">Find your perfect car</h2>
+    <p class="sub">Tell us what you are looking for. We will call you with the best matches.</p>
+    <label for="rn">Your name</label>
+    <input id="rn" type="text" autocomplete="name" maxlength="80" placeholder="Full name">
+    <label for="rp">Phone number</label>
+    <input id="rp" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="16" placeholder="10-digit mobile number">
+    <label for="rl">Your location</label>
+    <input id="rl" type="text" autocomplete="address-level2" maxlength="120" placeholder="Town or city">
+    <label for="rc">Car you are looking for</label>
+    <input id="rc" type="text" list="carlist" maxlength="160" placeholder="e.g. Grand Vitara, or an SUV under 8 lakh">
+    <datalist id="carlist"></datalist>
+    <input class="hp" id="rh" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <label class="consent" for="rk"><input id="rk" type="checkbox"> I agree that WHEELZA may contact me about cars.</label>
+    <p class="err" id="rerr" role="alert"></p>
+    <button class="pill hot big" id="rsub" type="submit">Register</button>
+    <button class="skip" id="rskip" type="button">Maybe later</button>
+  </form>
+  <div class="sheet thanks" id="regok" hidden>
+    <button class="mx" id="regx2" type="button" aria-label="Close">✕</button>
+    <div class="tick">✓</div>
+    <h2 id="thanksh">Thank you!</h2>
+    <p id="thanksp">We have your details and will call you soon.</p>
+    <a class="pill wa big" id="wa-thanks" href="#" target="_blank" rel="noopener">Chat on WhatsApp now</a>
+    <button class="skip" id="regdone" type="button">Browse cars</button>
+  </div>
+</div>
 
 <footer class="wrap site-foot">
   <div class="sf-brand"><b>WHEELZA</b><span>Pre-owned cars you can trust.</span></div>
@@ -269,14 +337,29 @@ button,input,select{font:inherit;color:inherit}
    01.jpg is the cover photo. Set "photos" to how many pictures are in the folder. */
 const WA="918129694868", MAPS="https://maps.app.goo.gl/WFd6LkwXZ2kAwPC89";
 const BRANDS=["Maruti Suzuki","Hyundai","Honda","Tata","Mahindra","Renault","Kia","Toyota","Datsun","Ford","Volkswagen","Skoda"];
-const CARS=[{
+const SAMPLE=[{
   id:"grand-vitara-sigma", brand:"Maruti Suzuki", model:"Grand Vitara", variant:"Sigma", year:2023,
   price:1045000, km:30000, fuel:"Petrol", trans:"Manual", owner:1, reg:"KL41", colour:"Silver",
   features:["Alloy wheels added","Alpine speakers","Blaupunkt touchscreen stereo","4-door sound damping","Tan seat covers","First owner"],
-  tagline:"Alloys + Alpine sound added",
-  photos:18
+  tagline:"Alloys + Alpine sound added", sold:false,
+  images:Array.from({length:18},(_,k)=>`cars/grand-vitara-sigma/${String(k+1).padStart(2,"0")}.jpg`)
 }];
-CARS.forEach(c=>{c.images=Array.from({length:c.photos},(_,k)=>`cars/${c.id}/${String(k+1).padStart(2,"0")}.jpg`)});
+let CARS=[], loaded=false, loadError=false;
+const cfg=window.WHEELZA_CONFIG||{};
+const LIVE=!!(cfg.SUPABASE_URL&&cfg.SUPABASE_KEY&&window.supabase);
+const sb=LIVE?window.supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_KEY):null;
+const fromRow=r=>({id:r.slug,brand:r.brand,model:r.model,variant:r.variant||"",year:r.year,price:r.price,km:r.km,fuel:r.fuel,trans:r.trans,
+  owner:r.owner,reg:r.reg||"",colour:r.colour||"",features:r.features||[],tagline:r.tagline||"",sold:!!r.sold,images:(r.images&&r.images.length?r.images:[])});
+async function loadCars(){
+  if(!LIVE){CARS=SAMPLE;loaded=true;return}
+  try{const {data,error}=await sb.from("cars").select("*").order("created_at",{ascending:false});if(error)throw error;CARS=data.map(fromRow)}
+  catch(e){console.warn(e);CARS=[];loadError=true}
+  loaded=true;
+}
+const brandList=()=>[...new Set([...BRANDS,...CARS.map(c=>c.brand)])];
+const carName=c=>`${c.year} ${c.brand} ${c.model}${c.variant?" "+c.variant:""}`;
+const PLACEHOLDER="data:image/svg+xml;utf8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 90"><rect width="160" height="90" fill="#FFF1E6"/><text x="80" y="50" font-size="9" text-anchor="middle" fill="#D44C06" font-family="sans-serif">No photo yet</text></svg>');
+let HERO={src:PLACEHOLDER,alt:"WHEELZA cars"};
 
 /* ---------- helpers ---------- */
 const $=(s,r=document)=>r.querySelector(s);
@@ -293,19 +376,21 @@ const app=$("#app");
 /* ---------- list view ---------- */
 const F={brands:new Set(),fuels:new Set(),trans:new Set(),min:"",max:"",year:"",owner:"",sort:"new"};
 function listView(){
-  const bc=b=>CARS.filter(c=>c.brand===b).length;
+  const bc=b=>CARS.filter(c=>c.brand===b&&!c.sold).length;
+  const av=CARS.find(c=>!c.sold&&c.images[0])||CARS.find(c=>c.images[0]);
+  HERO=av?{src:av.images[0],alt:carName(av)}:{src:PLACEHOLDER,alt:"WHEELZA cars"};
   const fuels=["Petrol","Diesel","CNG","Electric"], trs=["Manual","Automatic"];
   app.innerHTML=`
   <section class="strip" aria-label="Welcome">
-    <div><h1>Your next ride is waiting. Drive home happy.</h1><p>Real photos, clear prices and an EMI you can check before you visit. Pick a car, tap WhatsApp, and we will do the rest.</p></div>
-    <img src="${CARS[0].images[0]}" alt="${CARS[0].year} ${CARS[0].brand} ${CARS[0].model}">
+    <div><h1>Your next ride is waiting. Drive home happy.</h1><p>Real photos, clear prices and an EMI you can check before you visit. Tell us what you are looking for and we will find it.</p><div class="strip-cta"><button class="pill" id="reg-hero" type="button" data-reg="">Register now</button></div></div>
+    <img src="${HERO.src}" alt="${esc(HERO.alt)}">
   </section>
   <div class="shop">
     <button class="ftab" id="ftab" type="button" aria-label="Open filters">Filters</button>
     <div class="scrim" id="scrim"></div>
     <aside class="filters" id="filters" aria-label="Filters">
       <h2>Filters <span><button id="reset" type="button">Reset</button><button id="fclose" class="fx" type="button" aria-label="Close filters">✕</button></span></h2>
-      <details class="fg" open><summary>Brand</summary>${BRANDS.map(b=>`<label class="chk"><input type="checkbox" data-k="brands" value="${b}"> ${b}<em>${bc(b)}</em></label>`).join("")}</details>
+      <details class="fg" open><summary>Brand</summary>${brandList().map(b=>`<label class="chk"><input type="checkbox" data-k="brands" value="${b}"> ${b}<em>${bc(b)}</em></label>`).join("")}</details>
       <details class="fg" open><summary>Price range (₹ Lakh)</summary><div class="row2"><input class="in" id="pmin" type="number" min="0" step="0.5" placeholder="Min" aria-label="Minimum price in lakh"><input class="in" id="pmax" type="number" min="0" step="0.5" placeholder="Max" aria-label="Maximum price in lakh"></div></details>
       <details class="fg"><summary>Year</summary><select class="in" id="yr"><option value="">Any year</option>${[2024,2023,2022,2021,2020,2018,2016,2014].map(y=>`<option value="${y}">${y} &amp; newer</option>`).join("")}</select></details>
       <details class="fg"><summary>Fuel</summary>${fuels.map(f=>`<label class="chk"><input type="checkbox" data-k="fuels" value="${f}"> ${f}</label>`).join("")}</details>
@@ -333,36 +418,36 @@ function listView(){
 function draw(){
   let r=CARS.filter(c=>(!F.brands.size||F.brands.has(c.brand))&&(!F.fuels.size||F.fuels.has(c.fuel))&&(!F.trans.size||F.trans.has(c.trans))
     &&(F.min===""||c.price>=F.min*1e5)&&(F.max===""||c.price<=F.max*1e5)&&(!F.year||c.year>=+F.year)&&(!F.owner||c.owner<=+F.owner));
-  const s={new:(a,b)=>b.year-a.year,lo:(a,b)=>a.price-b.price,hi:(a,b)=>b.price-a.price,km:(a,b)=>a.km-b.km}[F.sort];r.sort(s);
+  const s={new:(a,b)=>b.year-a.year,lo:(a,b)=>a.price-b.price,hi:(a,b)=>b.price-a.price,km:(a,b)=>a.km-b.km}[F.sort];r.sort(s);r=[...r.filter(c=>!c.sold),...r.filter(c=>c.sold)];
   $("#count").textContent=r.length+(r.length===1?" car":" cars");const ap=$("#apply");if(ap)ap.textContent=`Show ${r.length} ${r.length===1?"car":"cars"}`;
-  $("#grid").innerHTML=r.length?r.map(card).join(""):`<div class="empty" style="grid-column:1/-1"><b>Nothing here yet</b>Loosen a filter or widen the price range and your car will show up.</div>`;
+  $("#grid").innerHTML=r.length?r.map(card).join(""):`<div class="empty" style="grid-column:1/-1"><b>${loadError?"We could not load the cars":"Nothing here yet"}</b>${loadError?"Please check your internet connection and refresh the page.":"Loosen a filter or widen the price range and your car will show up. Or tap Register and tell us what you want."}</div>`;
   document.querySelectorAll(".heart").forEach(h=>h.onclick=e=>{e.preventDefault();e.stopPropagation();const id=h.dataset.id;favs.has(id)?favs.delete(id):favs.add(id);h.setAttribute("aria-pressed",favs.has(id))});
 }
 function card(c){
-  return `<a class="card" href="#${c.id}">
-    <div class="ph"><img src="${c.images[0]}" alt="${c.year} ${c.brand} ${c.model}" loading="lazy">
+  return `<a class="card${c.sold?" is-sold":""}" href="#${c.id}">
+    <div class="ph"><img src="${c.images[0]||PLACEHOLDER}" alt="${esc(carName(c))}" loading="lazy">${c.sold?'<span class="sold">SOLD</span>':""}
       <button class="heart" data-id="${c.id}" aria-pressed="${favs.has(c.id)}" aria-label="Save this car" type="button"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.5-9.3C1.1 8.3 3 5 6.3 5c2 0 3.7 1.1 5.7 3.3C14 6.1 15.700 5 17.700 5 21 5 22.900 8.300 21.500 11.700 19.500 16.400 12 21 12 21z"/></svg></button></div>
     <div class="bd">
       <div class="l1"><h3>${c.year} ${c.brand} ${c.model}</h3><div class="var">${c.variant}</div></div>
-      <div class="prow"><span class="pr">₹${lakh(c.price)}</span><span class="emi-s">EMI ₹${inr(defEmi(c))}/m*</span></div>
+      <div class="prow"><span class="pr">₹${lakh(c.price)}</span>${c.sold?'<span class="emi-s">Sold</span>':`<span class="emi-s">EMI ₹${inr(defEmi(c))}/m*</span>`}</div>
       <div class="chips"><span>${(c.km/1000).toFixed(c.km%1000?1:0)}K km</span><span>${c.fuel}</span><span>${c.trans}</span><span>${c.reg}</span></div>
       <div class="loc"><span>WHEELZA showroom</span><b>${c.owner===1?"1st owner":c.owner+" owners"}</b></div>
     </div>
-    <div class="tag">◆ ${esc(c.tagline)}</div></a>`;
+    <div class="tag">${c.sold?"◆ This car has found a new owner":"◆ "+esc(c.tagline||"Ready to drive home")}</div></a>`;
 }
 
 /* ---------- car page ---------- */
 function carView(c){
-  let i=0;const n=c.images.length;
+  let i=0;const n=Math.max(1,c.images.length);if(!c.images.length)c.images=[PLACEHOLDER];
   app.innerHTML=`
   <a class="back" href="#">← All cars</a>
-  <div class="car">
+  <div class="car${c.sold?" is-sold":""}">
     <div class="stack">
       <div class="gal">
-        <div class="stage"><img id="main" alt=""><button class="nav p" id="pv" aria-label="Previous photo" type="button">‹</button><button class="nav n" id="nx" aria-label="Next photo" type="button">›</button><span class="cnt" id="cn"></span></div>
-        <div class="thumbs" id="th">${c.images.map((s,k)=>`<button type="button" data-i="${k}" aria-label="Photo ${k+1}"><img src="${s}" alt="" loading="lazy"></button>`).join("")}</div>
+        <div class="stage"><img id="main" alt="" onerror="this.src=PLACEHOLDER"><button class="nav p" id="pv" aria-label="Previous photo" type="button">‹</button><button class="nav n" id="nx" aria-label="Next photo" type="button">›</button><span class="cnt" id="cn"></span></div>
+        <div class="thumbs" id="th">${c.images.map((s,k)=>`<button type="button" data-i="${k}" aria-label="Photo ${k+1}"><img src="${s}" alt="" loading="lazy" onerror="this.src=PLACEHOLDER"></button>`).join("")}</div>
       </div>
-      <div class="panel"><div class="head"><div><h1>${c.year} ${c.brand} ${c.model} ${c.variant}</h1><p>${c.fuel} · ${c.trans} · ${(c.km).toLocaleString("en-IN")} km · ${c.owner===1?"First owner":c.owner+" owners"}</p></div>
+      <div class="panel">${c.sold?`<div class="soldbar"><span><b>SOLD</b> This car has found a new owner. Register and we will find you a similar one.</span><button class="pill hot" type="button" data-reg="Similar to ${esc(carName(c))}">Find me a similar car</button></div>`:""}<div class="head"><div><h1>${c.year} ${c.brand} ${c.model} ${c.variant}</h1><p>${c.fuel} · ${c.trans} · ${(c.km).toLocaleString("en-IN")} km · ${c.owner===1?"First owner":c.owner+" owners"}</p></div>
         <div class="big">₹${inr(c.price)}<small>${lakh(c.price)}</small></div></div></div>
       <div class="panel"><h2>Under the hood and beyond</h2><div class="specs">
         ${[["Make",c.brand],["Model",c.model],["Variant",c.variant],["Year",c.year],["Fuel type",c.fuel],["Odometer",c.km.toLocaleString("en-IN")+" km"],["Transmission",c.trans],["Ownership",c.owner===1?"First owner":c.owner+" owners"],["Registration",c.reg+" (Kerala)"],["Colour",c.colour]].map(([k,v])=>`<div><small>${k}</small><b>${v}</b></div>`).join("")}</div></div>
@@ -384,7 +469,7 @@ function carView(c){
         <div class="row"><a class="pill wa" href="${waLink(`Hi WHEELZA, I am interested in the ${c.year} ${c.brand} ${c.model} ${c.variant} (₹${inr(c.price)}). Is it available?`)}" target="_blank" rel="noopener">WhatsApp about this car</a><a class="pill hot" href="tel:+918129694868">Call now</a><a class="pill sun" href="${MAPS}" target="_blank" rel="noopener">Visit us</a></div></section>
     </div>
   </div>
-  <div class="dock"><a class="pill hot" href="tel:+918129694868">Call now</a><a class="pill wa" href="${waLink(`Hi WHEELZA, I am interested in the ${c.year} ${c.brand} ${c.model} ${c.variant} (₹${inr(c.price)}). Is it available?`)}" target="_blank" rel="noopener">WhatsApp</a></div>`;
+  ${c.sold?`<div class="dock"><button class="pill hot" type="button" data-reg="Similar to ${esc(carName(c))}">Find me a similar car</button></div>`:`<div class="dock"><a class="pill hot" href="tel:+918129694868">Call now</a><a class="pill wa" href="${waLink(`Hi WHEELZA, I am interested in the ${c.year} ${c.brand} ${c.model} ${c.variant} (₹${inr(c.price)}). Is it available?`)}" target="_blank" rel="noopener">WhatsApp</a></div>`}`;
   const show=k=>{i=(k+n)%n;$("#main").src=c.images[i];$("#main").alt=`${c.model} photo ${i+1}`;$("#cn").textContent=`${i+1} / ${n}`;
     document.querySelectorAll("#th button").forEach((b,j)=>{b.setAttribute("aria-current",j===i);if(j===i)b.scrollIntoView({block:"nearest",inline:"center"})})};
   $("#pv").onclick=()=>show(i-1);$("#nx").onclick=()=>show(i+1);
@@ -413,6 +498,66 @@ function carView(c){
   fromDp();
 }
 
+/* ---------- registration popup ---------- */
+const REG_KEY="wz_reg", REG_DAYS=365;
+const store={get(k,s){try{return(s?sessionStorage:localStorage).getItem(k)}catch(_){return null}},set(k,v,s){try{(s?sessionStorage:localStorage).setItem(k,v)}catch(_){}}};
+const savedReg=()=>{try{const o=JSON.parse(store.get(REG_KEY)||"null");return o&&Date.now()-o.t<REG_DAYS*864e5?o:null}catch(_){return null}};
+const regm=$("#regm"), regf=$("#regf"), regok=$("#regok");
+let regSource="popup", lastFocus=null;
+function openReg(source,prefillCar){
+  regSource=source||"button";lastFocus=document.activeElement;
+  const sv=savedReg();
+  if(sv){$("#rn").value=sv.name||"";$("#rp").value=sv.phone||"";$("#rl").value=sv.location||""}
+  if(prefillCar==="auto"){const c=CARS.find(x=>x.id===location.hash.slice(1));prefillCar=c?carName(c):""}
+  if(prefillCar)$("#rc").value=prefillCar;
+  $("#carlist").innerHTML=CARS.filter(c=>!c.sold).map(c=>`<option value="${esc(carName(c))}">`).join("");
+  $("#rerr").textContent="";regf.hidden=false;regok.hidden=true;
+  regm.hidden=false;document.body.style.overflow="hidden";
+  setTimeout(()=>$(sv?"#rc":"#rn").focus(),50);
+}
+function closeReg(skipped){
+  regm.hidden=true;document.body.style.overflow="";
+  if(skipped)store.set("wz_skip","1",true);
+  lastFocus&&lastFocus.focus&&lastFocus.focus();
+}
+const cleanPhone=v=>{let d=String(v).replace(/\D/g,"");if(d.length===12&&d.startsWith("91"))d=d.slice(2);if(d.length===11&&d.startsWith("0"))d=d.slice(1);return d};
+regf.addEventListener("submit",async e=>{
+  e.preventDefault();
+  if($("#rh").value)return;
+  const name=$("#rn").value.trim().replace(/\s+/g," "),phone=cleanPhone($("#rp").value),location_=$("#rl").value.trim(),car=$("#rc").value.trim();
+  const bad=[];const flag=(id,m)=>{bad.push([id,m])};
+  if(name.length<2)flag("rn","Please enter your name.");
+  if(!/^[6-9]\d{9}$/.test(phone))flag("rp","Please enter a valid 10-digit mobile number.");
+  if(location_.length<2)flag("rl","Please enter your town or city.");
+  if(car.length<2)flag("rc","Please tell us which car you are looking for.");
+  if(!$("#rk").checked)flag("rk","Please tick the box so we can contact you.");
+  ["rn","rp","rl","rc"].forEach(id=>$("#"+id).classList.toggle("bad",bad.some(b=>b[0]===id)));
+  if(bad.length){$("#rerr").textContent=bad[0][1];$("#"+bad[0][0]).focus();return}
+  const btn=$("#rsub");btn.disabled=true;btn.textContent="Saving…";$("#rerr").textContent="";
+  try{
+    if(LIVE){const {error}=await sb.from("leads").insert({name,phone,location:location_,car,source:regSource});if(error)throw error}
+    store.set(REG_KEY,JSON.stringify({name,phone,location:location_,t:Date.now()}));
+    $("#thanksh").textContent=`Thank you, ${name.split(" ")[0]}!`;
+    $("#thanksp").textContent=LIVE?"We have your details and will call you soon.":"Preview mode: the database is not connected yet, so this was not saved.";
+    $("#wa-thanks").href=waLink(`Hi WHEELZA, I am ${name} from ${location_}. I am looking for: ${car}.`);
+    regf.hidden=true;regok.hidden=false;
+  }catch(err){
+    console.warn(err);
+    $("#rerr").textContent=/wait a moment/i.test(err&&err.message||"")?"You just registered. Please wait a moment.":"Sorry, we could not save your details. Please check your internet and try again.";
+  }
+  btn.disabled=false;btn.textContent="Register";
+});
+$("#regx").onclick=$("#rskip").onclick=()=>closeReg(true);
+$("#regx2").onclick=$("#regdone").onclick=()=>closeReg(false);
+regm.addEventListener("click",e=>{if(e.target===regm)closeReg(!regok.hidden?false:true)});
+addEventListener("keydown",e=>{if(e.key==="Escape"&&!regm.hidden)closeReg(regok.hidden)});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-reg]");if(b){e.preventDefault();openReg("button",b.dataset.reg)}});
+async function startPopup(){
+  if(savedReg()||store.get("wz_skip",true))return;
+  if(LIVE){try{const {data}=await sb.auth.getSession();if(data&&data.session&&data.session.user.email===cfg.ADMIN_EMAIL)return}catch(_){}}
+  setTimeout(()=>{if(regm.hidden&&!savedReg())openReg("popup","")},1200);
+}
+
 /* ---------- router ---------- */
 addEventListener("keydown",e=>carView.key&&carView.key(e));
 function route(){
@@ -420,9 +565,11 @@ function route(){
   carView.close&&carView.close();carView.close=null;carView.key=null;
   c?carView(c):listView();
   scrollTo(0,0);
-  document.title=c?`${c.year} ${c.brand} ${c.model} | WHEELZA`:"WHEELZA";
+  document.title=c?`${carName(c)} | WHEELZA`:"WHEELZA";
 }
-addEventListener("hashchange",route);route();
+addEventListener("hashchange",()=>{if(loaded)route()});
+app.innerHTML='<div class="empty" style="margin-top:24px"><b>Loading cars…</b>One moment please.</div>';
+loadCars().then(()=>{route();startPopup()});
 </script>
 </body>
 </html>

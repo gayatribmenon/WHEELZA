@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>WHEELZA Admin</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#FFFFFF; --surface:#FFFFFF; --ink:#33190A; --muted:#85644F; --line:#F5CBAA;
+  --brand:#D44C06; --brand2:#F2791F; --accent:#D44C06; --sun:#FFE4CC; --chip:#FFF1E6; --soft:#FFF8F2;
+  --good:#2F7A4F; --bad:#B3202A;
+  --display:'Unbounded','Trebuchet MS',sans-serif; --body:'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;
+  padding-bottom:60px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--brand2);outline-offset:2px}
+.wrap{max-width:1240px;margin-inline:auto}
+[hidden]{display:none!important}
+a{color:inherit}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:99px;padding:9px 16px;min-height:40px;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn.hot{background:var(--brand);color:#fff}
+.btn.soft{background:var(--chip);color:var(--brand)}
+.btn.out{background:#fff;color:var(--brand);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn.white{background:#fff;color:var(--brand)}
+.btn.ghost{background:rgba(255,255,255,.16);color:#fff}
+.btn.danger{background:#fff;color:var(--bad);box-shadow:inset 0 0 0 1.5px #F2B8BC}
+.btn.danger.sure{background:var(--bad);color:#fff}
+.btn.wa{background:#25D366;color:#05300F}
+.btn.sm{min-height:34px;padding:6px 12px;font-size:13px}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+
+/* top bar */
+.top{margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px)));background:linear-gradient(100deg,var(--brand),var(--brand2));color:#fff;
+  padding:12px max(16px,env(safe-area-inset-right,0px)) 12px max(16px,env(safe-area-inset-left,0px));position:sticky;top:0;z-index:20;box-shadow:0 8px 24px -14px rgba(150,50,0,.6)}
+.top .wrap{display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap}
+.logo{font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:.04em;display:flex;align-items:center;gap:8px}
+.logo i{width:24px;height:24px;border-radius:50%;background:conic-gradient(#fff,#FFC799,#fff);display:grid;place-items:center}
+.logo i::after{content:"";width:9px;height:9px;border-radius:50%;background:var(--brand)}
+.logo small{font-family:var(--body);font-weight:600;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.9;border:1px solid rgba(255,255,255,.6);border-radius:99px;padding:1px 8px}
+.top .right{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+
+/* login */
+.login{min-height:calc(100vh - 80px);display:grid;place-items:center;padding:30px 0}
+.card{background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:0 18px 40px -26px rgba(190,75,0,.55)}
+.login .card{width:100%;max-width:400px;padding:28px 24px;position:relative;overflow:hidden}
+.login .card::before{content:"";position:absolute;inset:0 0 auto;height:8px;background:linear-gradient(90deg,var(--brand),var(--brand2))}
+.login h1{font-family:var(--display);font-size:22px;margin:6px 0 4px;color:var(--brand)}
+.login p.sub{margin:0 0 14px;color:var(--muted)}
+label.f{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:12px 0 5px}
+.in{width:100%;background:var(--chip);border:1.5px solid transparent;border-radius:12px;padding:11px 12px;font-size:16px;min-width:0}
+.in:focus{border-color:var(--brand);outline:none}
+.in.bad{border-color:var(--bad)}
+textarea.in{resize:vertical;min-height:70px}
+.pw{position:relative}.pw .in{padding-right:64px}
+.pw button{position:absolute;right:6px;top:50%;translate:0 -50%;background:none;border:0;color:var(--brand);font-weight:700;cursor:pointer;padding:8px}
+.msg{font-size:13.5px;font-weight:600;margin:10px 0 0}
+.msg.err{color:var(--bad)}.msg.ok{color:var(--good)}.msg:empty{display:none}
+.setup{background:var(--soft);border:1px dashed var(--brand2);border-radius:14px;padding:14px;font-size:14px}
+
+/* tabs + stats */
+.tabs{display:flex;gap:6px;margin:18px 0 14px;flex-wrap:wrap}
+.tab{border:0;background:var(--chip);color:var(--brand);font-weight:700;padding:10px 18px;border-radius:99px;cursor:pointer;min-height:42px}
+.tab[aria-selected="true"]{background:var(--brand);color:#fff}
+.tab b{background:#fff;color:var(--brand);border-radius:99px;padding:0 8px;margin-left:6px;font-size:12px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
+.stat{background:var(--soft);border:1px solid var(--line);border-radius:16px;padding:12px 14px}
+.stat small{display:block;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.stat b{font-family:var(--display);font-size:22px;color:var(--brand)}
+
+/* toolbar */
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.search{flex:1 1 280px;position:relative;min-width:0}
+.search input{padding-left:40px}
+.search svg{position:absolute;left:12px;top:50%;translate:0 -50%;width:18px;height:18px;stroke:var(--muted);fill:none;stroke-width:2}
+.dates{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.dates label{font-size:12px;font-weight:700;color:var(--muted)}
+.dates .in{width:auto;padding:8px 10px;font-size:14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chip{border:1.5px solid var(--line);background:#fff;color:var(--ink);border-radius:99px;padding:6px 14px;font-weight:600;font-size:13px;cursor:pointer;min-height:34px}
+.chip[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#fff}
+.count{color:var(--muted);font-size:14px;margin:0 0 8px}
+
+/* table */
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+th{background:var(--chip);color:var(--brand);text-align:left;font-size:12px;letter-spacing:.07em;text-transform:uppercase;padding:11px 12px;white-space:nowrap}
+td{padding:11px 12px;border-top:1px solid var(--line);vertical-align:top}
+td.dt{white-space:nowrap;color:var(--muted);font-size:13.5px}
+td.nm{font-weight:700}
+td a.tel{font-weight:700;text-decoration:none;color:var(--brand);white-space:nowrap}
+.pill{display:inline-block;border-radius:99px;padding:2px 10px;font-size:12px;font-weight:700}
+.pill.new{background:var(--sun);color:#7A2E00}
+.pill.done{background:#DDF3E6;color:var(--good)}
+.pill.sold{background:#33190A;color:#fff}
+.pill.av{background:#DDF3E6;color:var(--good)}
+.acts{display:flex;gap:6px;flex-wrap:wrap}
+.empty{background:var(--soft);border:1px dashed var(--line);border-radius:18px;padding:34px 18px;text-align:center;color:var(--muted)}
+.empty b{display:block;color:var(--ink);font-size:17px;margin-bottom:4px}
+mark{background:#FFD9A8;color:inherit;border-radius:3px;padding:0 1px}
+
+@media(max-width:760px){
+  table,thead,tbody,tr,td{display:block;width:100%}
+  thead{display:none}
+  table{border:0;background:none;border-radius:0}
+  tr{background:#fff;border:1px solid var(--line);border-radius:18px;margin-bottom:12px;padding:12px 14px;box-shadow:0 10px 24px -20px rgba(190,75,0,.6)}
+  td{border:0;padding:3px 0;display:grid;grid-template-columns:92px 1fr;gap:8px}
+  td::before{content:attr(data-l);color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding-top:3px}
+  td.nm{font-size:17px}
+  td.ac::before{content:""}
+  td.ac{grid-template-columns:1fr;padding-top:8px}
+}
+
+/* cars list */
+.cars{display:grid;gap:12px}
+.crow{display:grid;grid-template-columns:120px 1fr auto;gap:14px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:18px;background:#fff}
+.crow img{width:120px;height:75px;object-fit:cover;border-radius:12px;background:var(--chip)}
+.crow.sold img{filter:grayscale(.8);opacity:.75}
+.crow h3{margin:0 0 2px;font-size:16px}
+.crow p{margin:0;color:var(--muted);font-size:13.5px}
+@media(max-width:640px){.crow{grid-template-columns:96px 1fr}.crow img{width:96px;height:64px}.crow .acts{grid-column:1/-1}}
+
+/* editor */
+.editor{padding:20px}
+.editor h2{font-family:var(--display);font-size:18px;color:var(--brand);margin:0 0 4px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:0 14px}
+.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:8px}
+.ph{position:relative;border:2px solid var(--line);border-radius:14px;overflow:hidden;background:var(--chip)}
+.ph.cover{border-color:var(--brand)}
+.ph img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.ph .tag{position:absolute;left:6px;top:6px;background:var(--brand);color:#fff;border-radius:99px;font-size:11px;font-weight:700;padding:1px 8px}
+.ph .pbar{display:flex;justify-content:space-between;gap:2px;padding:4px;background:#fff}
+.ph .pbar button{flex:1;border:0;background:var(--chip);color:var(--brand);border-radius:8px;min-height:32px;font-weight:700;cursor:pointer}
+.ph .pbar button.x{color:var(--bad)}
+.drop{border:2px dashed var(--brand2);border-radius:16px;background:var(--soft);padding:18px;text-align:center;color:var(--muted);cursor:pointer;margin-top:6px}
+.drop.over{background:var(--sun)}
+.drop b{color:var(--brand)}
+.feats{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.feats span{background:var(--chip);color:var(--brand);border-radius:99px;padding:4px 6px 4px 12px;font-weight:600;font-size:13px;display:inline-flex;align-items:center;gap:4px}
+.feats button{border:0;background:#fff;color:var(--bad);border-radius:50%;width:22px;height:22px;cursor:pointer;line-height:1;font-weight:800}
+.sticky{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--line);margin:18px -20px -20px;padding:12px 20px max(12px,env(safe-area-inset-bottom,0px));display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-radius:0 0 22px 22px}
+.sw{display:flex;align-items:center;gap:10px;margin-top:14px;font-weight:600}
+.sw input{width:20px;height:20px;accent-color:var(--brand)}
+.toast{position:fixed;left:50%;bottom:max(20px,env(safe-area-inset-bottom,0px));translate:-50% 0;background:#33190A;color:#fff;padding:12px 20px;border-radius:99px;font-weight:600;z-index:80;box-shadow:0 14px 30px -10px rgba(0,0,0,.5);max-width:calc(100vw - 32px)}
+.toast.err{background:var(--bad)}
+.hint{color:var(--muted);font-size:13px;margin:2px 0 0}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="logo"><i></i>WHEELZA <small>Admin</small></div>
+    <div class="right" id="topbtns" hidden>
+      <a class="btn ghost sm" href="index.html" target="_blank" rel="noopener">View site</a>
+      <button class="btn white sm" id="logout" type="button">Log out</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- not connected yet -->
+  <section id="v-setup" class="login" hidden>
+    <div class="card" style="padding:26px 22px">
+      <h1>Almost there</h1>
+      <p class="sub">The database is not connected yet.</p>
+      <div class="setup">Open <b>config.js</b> and fill in <b>SUPABASE_URL</b> and <b>SUPABASE_KEY</b> as shown in the setup guide. Then reload this page.</div>
+    </div>
+  </section>
+
+  <!-- login -->
+  <section id="v-login" class="login" hidden>
+    <form class="card" id="lf" novalidate>
+      <h1>Admin login</h1>
+      <p class="sub">Sign in to see registrations and manage cars.</p>
+      <label class="f" for="lu">Name</label>
+      <input class="in" id="lu" autocomplete="username" autocapitalize="characters" spellcheck="false" placeholder="WHEELZA">
+      <label class="f" for="lp">Password</label>
+      <div class="pw"><input class="in" id="lp" type="password" autocomplete="current-password" placeholder="Your password"><button type="button" id="lshow" aria-label="Show password">Show</button></div>
+      <p class="msg err" id="lerr" role="alert"></p>
+      <button class="btn hot" id="lgo" type="submit" style="width:100%;margin-top:16px;min-height:46px;font-size:16px">Sign in</button>
+    </form>
+  </section>
+
+  <!-- dashboard -->
+  <section id="v-dash" hidden>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="t-leads" aria-selected="true">Registrations <b id="n-leads">0</b></button>
+      <button class="tab" role="tab" id="t-cars" aria-selected="false">Cars <b id="n-cars">0</b></button>
+    </div>
+
+    <!-- registrations -->
+    <div id="p-leads">
+      <div class="stats" id="stats"></div>
+      <div class="bar">
+        <div class="search">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <input class="in" id="q" type="search" placeholder="Search name, phone, car, location, date…" aria-label="Search registrations" autocomplete="off">
+        </div>
+        <div class="dates">
+          <label for="d1">From</label><input class="in" id="d1" type="date">
+          <label for="d2">To</label><input class="in" id="d2" type="date">
+        </div>
+      </div>
+      <div class="chips" id="quick">
+        <button class="chip" data-q="all" aria-pressed="true">All time</button>
+        <button class="chip" data-q="today" aria-pressed="false">Today</button>
+        <button class="chip" data-q="7" aria-pressed="false">Last 7 days</button>
+        <button class="chip" data-q="30" aria-pressed="false">Last 30 days</button>
+        <span style="flex:1"></span>
+        <button class="chip" data-s="all" aria-pressed="true">All</button>
+        <button class="chip" data-s="new" aria-pressed="false">New</button>
+        <button class="chip" data-s="done" aria-pressed="false">Contacted</button>
+      </div>
+      <div class="bar" style="justify-content:space-between">
+        <p class="count" id="lcount" style="margin:0"></p>
+        <div class="acts">
+          <button class="btn out sm" id="sortb" type="button">Newest first</button>
+          <button class="btn out sm" id="refresh" type="button">Refresh</button>
+          <button class="btn hot sm" id="csv" type="button">Download CSV</button>
+        </div>
+      </div>
+      <div class="tw"><table id="ltable">
+        <thead><tr><th>Date and time</th><th>Name</th><th>Phone</th><th>Location</th><th>Looking for</th><th>Status</th><th></th></tr></thead>
+        <tbody id="lbody"></tbody>
+      </table></div>
+      <div class="empty" id="lempty" hidden></div>
+    </div>
+
+    <!-- cars -->
+    <div id="p-cars" hidden>
+      <div id="clist-wrap">
+        <div class="bar" style="justify-content:space-between">
+          <p class="count" id="ccount" style="margin:0"></p>
+          <button class="btn hot" id="addcar" type="button">+ Add new car</button>
+        </div>
+        <div class="cars" id="clist"></div>
+      </div>
+
+      <form class="card editor" id="ed" hidden novalidate>
+        <h2 id="edt">Add new car</h2>
+        <p class="hint">Fill in the details and add photos. The first photo is the cover.</p>
+        <div class="grid2">
+          <div><label class="f" for="e-brand">Brand</label><input class="in" id="e-brand" list="brandlist" placeholder="Maruti Suzuki" maxlength="40"><datalist id="brandlist"></datalist></div>
+          <div><label class="f" for="e-model">Model</label><input class="in" id="e-model" placeholder="Grand Vitara" maxlength="60"></div>
+          <div><label class="f" for="e-variant">Variant</label><input class="in" id="e-variant" placeholder="Sigma" maxlength="60"></div>
+          <div><label class="f" for="e-year">Year</label><input class="in" id="e-year" inputmode="numeric" placeholder="2023" maxlength="4"></div>
+          <div><label class="f" for="e-price">Price (₹)</label><input class="in" id="e-price" inputmode="numeric" placeholder="10,45,000"></div>
+          <div><label class="f" for="e-km">Kilometres driven</label><input class="in" id="e-km" inputmode="numeric" placeholder="30,000"></div>
+          <div><label class="f" for="e-fuel">Fuel</label><select class="in" id="e-fuel"><option>Petrol</option><option>Diesel</option><option>CNG</option><option>Electric</option><option>Hybrid</option></select></div>
+          <div><label class="f" for="e-trans">Transmission</label><select class="in" id="e-trans"><option>Manual</option><option>Automatic</option></select></div>
+          <div><label class="f" for="e-owner">Owners</label><select class="in" id="e-owner"><option value="1">First owner</option><option value="2">2 owners</option><option value="3">3 owners</option><option value="4">4 or more</option></select></div>
+          <div><label class="f" for="e-reg">Registration</label><input class="in" id="e-reg" placeholder="KL41" maxlength="12"></div>
+          <div><label class="f" for="e-colour">Colour</label><input class="in" id="e-colour" placeholder="Silver" maxlength="30"></div>
+          <div><label class="f" for="e-tag">Short catchy line</label><input class="in" id="e-tag" placeholder="Alloys + Alpine sound added" maxlength="80"></div>
+        </div>
+
+        <label class="f" for="e-feat">Added extras and features</label>
+        <div style="display:flex;gap:8px"><input class="in" id="e-feat" placeholder="Type one and press Add, e.g. Alloy wheels" maxlength="60"><button class="btn soft" id="e-featadd" type="button">Add</button></div>
+        <div class="feats" id="feats"></div>
+
+        <label class="f">Photos</label>
+        <div class="drop" id="drop" tabindex="0" role="button" aria-label="Add photos"><b>Tap to choose photos</b> or drop them here<br><span class="hint">Pick many at once. JPG or PNG. They are shrunk automatically.</span></div>
+        <input id="e-files" type="file" accept="image/*" multiple hidden>
+        <div class="photos" id="photos"></div>
+
+        <label class="sw"><input type="checkbox" id="e-sold"> This car is sold</label>
+        <p class="msg err" id="eerr" role="alert"></p>
+        <div class="sticky">
+          <button class="btn hot" id="esave" type="submit">Save car</button>
+          <button class="btn out" id="ecancel" type="button">Cancel</button>
+          <span class="hint" id="eprog"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+const cfg=window.WHEELZA_CONFIG||{};
+const LIVE=!!(cfg.SUPABASE_URL&&cfg.SUPABASE_KEY&&window.supabase);
+const sb=LIVE?window.supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_KEY):null;
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const inr=n=>Math.round(n).toLocaleString("en-IN");
+const BRANDS=["Maruti Suzuki","Hyundai","Honda","Tata","Mahindra","Renault","Kia","Toyota","Datsun","Ford","Volkswagen","Skoda","Nissan","MG","Jeep"];
+const PLACEHOLDER="data:image/svg+xml;utf8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 90"><rect width="160" height="90" fill="#FFF1E6"/></svg>');
+let toastT;
+function toast(m,err){const t=$("#toast");t.textContent=m;t.className="toast"+(err?" err":"");t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,3200)}
+function show(v){["setup","login","dash"].forEach(x=>$("#v-"+x).hidden=x!==v);$("#topbtns").hidden=v!=="dash"}
+
+/* ------------------------------------------------ login */
+const isAdmin=u=>!!u&&(u.email||"").toLowerCase()===String(cfg.ADMIN_EMAIL||"").toLowerCase();
+$("#lshow").onclick=()=>{const p=$("#lp"),h=p.type==="password";p.type=h?"text":"password";$("#lshow").textContent=h?"Hide":"Show"};
+$("#lf").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const u=$("#lu").value.trim(),p=$("#lp").value,err=$("#lerr");err.textContent="";
+  if(!u||!p){err.textContent="Please enter the name and password.";return}
+  const btn=$("#lgo");btn.disabled=true;btn.textContent="Signing in…";
+  try{
+    if(u.toLowerCase()!==String(cfg.ADMIN_USERNAME||"WHEELZA").toLowerCase())throw new Error("bad");
+    const {data,error}=await sb.auth.signInWithPassword({email:cfg.ADMIN_EMAIL,password:p});
+    if(error||!isAdmin(data.user))throw new Error("bad");
+    $("#lp").value="";enter();
+  }catch(_){err.textContent="Wrong name or password. Please try again."}
+  btn.disabled=false;btn.textContent="Sign in";
+});
+$("#logout").onclick=async()=>{await sb.auth.signOut();LEADS=[];CARS=[];show("login")};
+
+/* ------------------------------------------------ tabs */
+function tab(n){
+  $("#t-leads").setAttribute("aria-selected",n==="leads");$("#t-cars").setAttribute("aria-selected",n==="cars");
+  $("#p-leads").hidden=n!=="leads";$("#p-cars").hidden=n!=="cars";
+}
+$("#t-leads").onclick=()=>tab("leads");$("#t-cars").onclick=()=>{closeEditor();tab("cars")};
+
+/* ------------------------------------------------ registrations */
+let LEADS=[],quick="all",statusF="all",newestFirst=true;
+const IST="Asia/Kolkata";
+const fmtDate=d=>d.toLocaleDateString("en-GB",{timeZone:IST,day:"2-digit",month:"short",year:"numeric"});
+const fmtTime=d=>d.toLocaleTimeString("en-IN",{timeZone:IST,hour:"2-digit",minute:"2-digit",hour12:true}).toUpperCase();
+const isoDay=d=>d.toLocaleDateString("en-CA",{timeZone:IST});
+function prep(l){
+  const d=new Date(l.created_at),iso=isoDay(d),[y,m,dd]=iso.split("-");
+  l._d=d;l._iso=iso;l._date=fmtDate(d);l._time=fmtTime(d);
+  const mon=d.toLocaleDateString("en-GB",{timeZone:IST,month:"long"});
+  l._hay=[l.name,l.phone,"+91"+l.phone,l.location,l.car,l.source,l.status==="done"?"contacted":"new",l._date,l._time,iso,`${dd}/${m}/${y}`,`${dd}-${m}-${y}`,mon,`${dd} ${mon}`].join(" ").toLowerCase();
+  return l;
+}
+async function loadLeads(){
+  let all=[],from=0;const step=1000;
+  for(;;){
+    const {data,error}=await sb.from("leads").select("*").order("created_at",{ascending:false}).range(from,from+step-1);
+    if(error)throw error;all=all.concat(data);if(data.length<step)break;from+=step;
+  }
+  LEADS=all.map(prep);
+}
+function dayShift(n){const d=new Date(Date.now()-n*864e5);return isoDay(d)}
+function filtered(){
+  const terms=$("#q").value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+  let d1=$("#d1").value,d2=$("#d2").value;
+  const today=isoDay(new Date());
+  if(quick==="today"){d1=d2=today}else if(quick==="7"){d1=dayShift(6);d2=today}else if(quick==="30"){d1=dayShift(29);d2=today}
+  const r=LEADS.filter(l=>(!d1||l._iso>=d1)&&(!d2||l._iso<=d2)&&(statusF==="all"||l.status===statusF)&&terms.every(t=>l._hay.includes(t.replace(/^\+?91(?=\d{10}$)/,""))||l._hay.includes(t)));
+  r.sort((a,b)=>newestFirst?b._d-a._d:a._d-b._d);
+  return {r,terms};
+}
+function hl(text,terms){
+  let h=esc(text);
+  terms.filter(t=>t.length>1).forEach(t=>{const re=new RegExp("("+t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","ig");h=h.replace(re,(m,_a,off,str)=>{
+    // do not break inside an HTML entity
+    const before=h.lastIndexOf("&",off),semi=h.lastIndexOf(";",off);return before>semi&&before!==-1?m:"<mark>"+m+"</mark>"})});
+  return h;
+}
+function renderStats(){
+  const today=isoDay(new Date()),w=dayShift(6);
+  const n=LEADS.length,t=LEADS.filter(l=>l._iso===today).length,wk=LEADS.filter(l=>l._iso>=w).length,nw=LEADS.filter(l=>l.status==="new").length;
+  $("#stats").innerHTML=`<div class="stat"><small>Total</small><b>${n}</b></div><div class="stat"><small>Today</small><b>${t}</b></div><div class="stat"><small>Last 7 days</small><b>${wk}</b></div><div class="stat"><small>Not contacted</small><b>${nw}</b></div>`;
+  $("#n-leads").textContent=n;
+}
+function renderLeads(){
+  renderStats();
+  const {r,terms}=filtered();
+  $("#lcount").textContent=`Showing ${r.length} of ${LEADS.length} registration${LEADS.length===1?"":"s"}`;
+  $("#sortb").textContent=newestFirst?"Newest first":"Oldest first";
+  $("#ltable").hidden=!r.length;
+  const em=$("#lempty");em.hidden=!!r.length;
+  if(!r.length)em.innerHTML=LEADS.length?"<b>No matches</b>Try a different word, or clear the date filters.":"<b>No registrations yet</b>When someone registers on the site, they will show up here.";
+  $("#lbody").innerHTML=r.map(l=>{
+    const wa=`https://wa.me/91${l.phone}?text=${encodeURIComponent(`Hi ${l.name}, this is WHEELZA. Thank you for registering. We have some cars that may suit you.`)}`;
+    return `<tr data-id="${esc(l.id)}">
+      <td class="dt" data-l="Date">${hl(l._date,terms)}<br>${hl(l._time,terms)}</td>
+      <td class="nm" data-l="Name">${hl(l.name,terms)}</td>
+      <td data-l="Phone"><a class="tel" href="tel:+91${esc(l.phone)}">${hl(l.phone.replace(/^(\d{5})(\d{5})$/,"$1 $2"),terms)}</a></td>
+      <td data-l="Location">${hl(l.location,terms)}</td>
+      <td data-l="Looking for">${hl(l.car,terms)}</td>
+      <td data-l="Status"><span class="pill ${l.status==="done"?"done":"new"}">${l.status==="done"?"Contacted":"New"}</span></td>
+      <td class="ac"><div class="acts">
+        <a class="btn wa sm" href="${esc(wa)}" target="_blank" rel="noopener">WhatsApp</a>
+        <button class="btn soft sm" data-act="toggle">${l.status==="done"?"Mark new":"Mark contacted"}</button>
+        <button class="btn danger sm" data-act="del">Delete</button>
+      </div></td></tr>`}).join("");
+}
+$("#lbody").addEventListener("click",async e=>{
+  const b=e.target.closest("button[data-act]");if(!b)return;
+  const id=b.closest("tr").dataset.id,l=LEADS.find(x=>x.id===id);if(!l)return;
+  if(b.dataset.act==="toggle"){
+    const st=l.status==="done"?"new":"done";b.disabled=true;
+    const {error}=await sb.from("leads").update({status:st}).eq("id",id);
+    if(error){toast("Could not update. Please try again.",true);b.disabled=false;return}
+    l.status=st;prep(l);renderLeads();
+  }else{
+    if(!b.classList.contains("sure")){b.classList.add("sure");b.textContent="Sure? Delete";setTimeout(()=>{if(b.isConnected){b.classList.remove("sure");b.textContent="Delete"}},4000);return}
+    b.disabled=true;
+    const {error}=await sb.from("leads").delete().eq("id",id);
+    if(error){toast("Could not delete. Please try again.",true);b.disabled=false;return}
+    LEADS=LEADS.filter(x=>x.id!==id);renderLeads();toast("Registration deleted");
+  }
+});
+["q","d1","d2"].forEach(id=>$("#"+id).addEventListener("input",()=>{if(id!=="q"){quick="custom";$$("#quick [data-q]").forEach(c=>c.setAttribute("aria-pressed","false"))}renderLeads()}));
+$("#quick").addEventListener("click",e=>{
+  const c=e.target.closest(".chip");if(!c)return;
+  if(c.dataset.q){quick=c.dataset.q;$("#d1").value=$("#d2").value="";$$("#quick [data-q]").forEach(x=>x.setAttribute("aria-pressed",x===c))}
+  if(c.dataset.s){statusF=c.dataset.s;$$("#quick [data-s]").forEach(x=>x.setAttribute("aria-pressed",x===c))}
+  renderLeads();
+});
+$("#sortb").onclick=()=>{newestFirst=!newestFirst;renderLeads()};
+$("#refresh").onclick=async()=>{try{await loadLeads();renderLeads();toast("Updated")}catch(_){toast("Could not refresh.",true)}};
+$("#csv").onclick=()=>{
+  const {r}=filtered();if(!r.length){toast("Nothing to download",true);return}
+  const cell=v=>{v=String(v??"");if(/^[=+\-@\t\r]/.test(v))v="'"+v;return '"'+v.replace(/"/g,'""')+'"'};
+  const rows=[["Date","Time","Name","Phone","Location","Looking for","Source","Status"],...r.map(l=>[l._date,l._time,l.name,l.phone,l.location,l.car,l.source,l.status==="done"?"Contacted":"New"])];
+  const blob=new Blob(["﻿"+rows.map(x=>x.map(cell).join(",")).join("\r\n")],{type:"text/csv;charset=utf-8"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`wheelza-registrations-${isoDay(new Date())}.csv`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+};
+
+/* ------------------------------------------------ cars list */
+let CARS=[];
+const carName=c=>`${c.year} ${c.brand} ${c.model}${c.variant?" "+c.variant:""}`;
+async function loadCars(){
+  const {data,error}=await sb.from("cars").select("*").order("created_at",{ascending:false});
+  if(error)throw error;CARS=data;
+}
+function renderCars(){
+  $("#n-cars").textContent=CARS.length;
+  const av=CARS.filter(c=>!c.sold).length;
+  $("#ccount").textContent=`${CARS.length} car${CARS.length===1?"":"s"}: ${av} available, ${CARS.length-av} sold`;
+  $("#brandlist").innerHTML=[...new Set([...BRANDS,...CARS.map(c=>c.brand)])].map(b=>`<option value="${esc(b)}">`).join("");
+  $("#clist").innerHTML=CARS.length?CARS.map(c=>`<div class="crow${c.sold?" sold":""}" data-id="${esc(c.id)}">
+      <img src="${esc((c.images&&c.images[0])||PLACEHOLDER)}" alt="" loading="lazy" onerror="this.src=PLACEHOLDER">
+      <div><h3>${esc(carName(c))}</h3><p>₹${inr(c.price)} · ${inr(c.km)} km · ${esc(c.fuel)} · ${esc(c.trans)}</p>
+        <p><span class="pill ${c.sold?"sold":"av"}">${c.sold?"SOLD":"Available"}</span> · ${(c.images||[]).length} photo${(c.images||[]).length===1?"":"s"}</p></div>
+      <div class="acts">
+        <button class="btn soft sm" data-act="edit">Edit</button>
+        <button class="btn ${c.sold?"out":"hot"} sm" data-act="sold">${c.sold?"Mark available":"Mark as sold"}</button>
+        <button class="btn danger sm" data-act="del">Delete</button>
+      </div></div>`).join(""):`<div class="empty"><b>No cars yet</b>Tap “Add new car” to list your first one.</div>`;
+}
+$("#clist").addEventListener("click",async e=>{
+  const b=e.target.closest("button[data-act]");if(!b)return;
+  const id=b.closest(".crow").dataset.id,c=CARS.find(x=>x.id===id);if(!c)return;
+  if(b.dataset.act==="edit")return openEditor(c);
+  if(b.dataset.act==="sold"){
+    b.disabled=true;const sold=!c.sold;
+    const {error}=await sb.from("cars").update({sold,sold_at:sold?new Date().toISOString():null}).eq("id",id);
+    if(error){toast("Could not update. Please try again.",true);b.disabled=false;return}
+    c.sold=sold;renderCars();toast(sold?"Marked as sold":"Marked as available");return;
+  }
+  if(!b.classList.contains("sure")){b.classList.add("sure");b.textContent="Sure? Delete";setTimeout(()=>{if(b.isConnected){b.classList.remove("sure");b.textContent="Delete"}},4000);return}
+  b.disabled=true;
+  const {error}=await sb.from("cars").delete().eq("id",id);
+  if(error){toast("Could not delete. Please try again.",true);b.disabled=false;return}
+  removeStored(c.images||[]);CARS=CARS.filter(x=>x.id!==id);renderCars();toast("Car deleted");
+});
+
+/* ------------------------------------------------ editor */
+let ED=null; // {id,slug,photos:[{url,blob,preview}],feats:[],removed:[],wasSold}
+const num=v=>parseInt(String(v).replace(/[^0-9]/g,""),10)||0;
+const fmtNum=el=>{const n=num(el.value);el.value=n?inr(n):""};
+["e-price","e-km"].forEach(id=>$("#"+id).addEventListener("blur",e=>fmtNum(e.target)));
+function openEditor(c){
+  ED={id:c?.id||null,slug:c?.slug||null,photos:(c?.images||[]).map(u=>({url:u})),feats:[...(c?.features||[])],removed:[],wasSold:!!c?.sold};
+  $("#edt").textContent=c?"Edit car":"Add new car";
+  const v=(id,val)=>{$("#"+id).value=val??"";$("#"+id).classList.remove("bad")};
+  v("e-brand",c?.brand);v("e-model",c?.model);v("e-variant",c?.variant);v("e-year",c?.year);
+  v("e-price",c?inr(c.price):"");v("e-km",c?inr(c.km):"");v("e-fuel",c?.fuel||"Petrol");v("e-trans",c?.trans||"Manual");
+  v("e-owner",String(Math.min(c?.owner||1,4)));v("e-reg",c?.reg);v("e-colour",c?.colour);v("e-tag",c?.tagline);v("e-feat","");
+  $("#e-sold").checked=!!c?.sold;$("#eerr").textContent="";$("#eprog").textContent="";
+  $("#clist-wrap").hidden=true;$("#ed").hidden=false;drawFeats();drawPhotos();scrollTo({top:0});
+}
+function closeEditor(){
+  if(ED)ED.photos.forEach(p=>p.preview&&URL.revokeObjectURL(p.preview));
+  ED=null;$("#ed").hidden=true;$("#clist-wrap").hidden=false;
+}
+$("#addcar").onclick=()=>openEditor(null);
+$("#ecancel").onclick=closeEditor;
+function drawFeats(){
+  $("#feats").innerHTML=ED.feats.map((f,i)=>`<span>${esc(f)}<button type="button" data-i="${i}" aria-label="Remove ${esc(f)}">×</button></span>`).join("");
+}
+$("#feats").addEventListener("click",e=>{const b=e.target.closest("button[data-i]");if(b){ED.feats.splice(+b.dataset.i,1);drawFeats()}});
+function addFeat(){const t=$("#e-feat").value.trim();if(!t)return;if(!ED.feats.some(f=>f.toLowerCase()===t.toLowerCase()))ED.feats.push(t);$("#e-feat").value="";drawFeats()}
+$("#e-featadd").onclick=addFeat;
+$("#e-feat").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();addFeat()}});
+
+function drawPhotos(){
+  $("#photos").innerHTML=ED.photos.map((p,i)=>`<div class="ph${i===0?" cover":""}" data-i="${i}">
+    ${i===0?'<span class="tag">Cover</span>':""}
+    <img src="${esc(p.preview||p.url)}" alt="Photo ${i+1}" onerror="this.src=PLACEHOLDER">
+    <div class="pbar"><button type="button" data-a="l" aria-label="Move earlier"${i===0?" disabled":""}>←</button>${i>0?'<button type="button" data-a="c" aria-label="Make cover">★</button>':""}<button type="button" data-a="r" aria-label="Move later"${i===ED.photos.length-1?" disabled":""}>→</button><button type="button" class="x" data-a="x" aria-label="Remove photo">✕</button></div></div>`).join("");
+}
+$("#photos").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-a]");if(!b)return;
+  const i=+b.closest(".ph").dataset.i,P=ED.photos,a=b.dataset.a;
+  if(a==="l"&&i>0)[P[i-1],P[i]]=[P[i],P[i-1]];
+  else if(a==="r"&&i<P.length-1)[P[i+1],P[i]]=[P[i],P[i+1]];
+  else if(a==="c"){const [x]=P.splice(i,1);P.unshift(x)}
+  else if(a==="x"){const [x]=P.splice(i,1);if(x.url)ED.removed.push(x.url);if(x.preview)URL.revokeObjectURL(x.preview)}
+  drawPhotos();
+});
+async function shrink(file){
+  const url=URL.createObjectURL(file);
+  try{
+    const img=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>rej(new Error("read"));i.src=url});
+    const max=1600,k=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight));
+    const w=Math.round(img.naturalWidth*k),h=Math.round(img.naturalHeight*k);
+    const c=document.createElement("canvas");c.width=w;c.height=h;
+    const g=c.getContext("2d");g.fillStyle="#fff";g.fillRect(0,0,w,h);g.drawImage(img,0,0,w,h);
+    return await new Promise((res,rej)=>c.toBlob(b=>b?res(b):rej(new Error("encode")),"image/jpeg",0.82));
+  }finally{URL.revokeObjectURL(url)}
+}
+async function addFiles(files){
+  const list=[...files].filter(f=>f.type.startsWith("image/")||/\.(jpe?g|png|webp)$/i.test(f.name));
+  if(!list.length)return;
+  const prog=$("#eprog");let bad=0;
+  for(let i=0;i<list.length;i++){
+    prog.textContent=`Preparing photo ${i+1} of ${list.length}…`;
+    try{const blob=await shrink(list[i]);ED.photos.push({blob,preview:URL.createObjectURL(blob)})}catch(_){bad++}
+  }
+  prog.textContent="";$("#eerr").textContent="";drawPhotos();
+  if(bad)toast(`${bad} photo${bad>1?"s":""} could not be read. Please use JPG or PNG.`,true);
+}
+$("#drop").onclick=()=>$("#e-files").click();
+$("#drop").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();$("#e-files").click()}});
+$("#e-files").onchange=async e=>{const f=[...e.target.files];e.target.value="";await addFiles(f)};
+["dragover","dragenter"].forEach(ev=>$("#drop").addEventListener(ev,e=>{e.preventDefault();$("#drop").classList.add("over")}));
+["dragleave","drop"].forEach(ev=>$("#drop").addEventListener(ev,e=>{e.preventDefault();$("#drop").classList.remove("over")}));
+$("#drop").addEventListener("drop",e=>addFiles(e.dataTransfer.files));
+
+const slugify=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,70);
+function uniqueSlug(base){let s=base,n=2;const used=new Set(CARS.map(c=>c.slug));while(used.has(s))s=`${base}-${n++}`;return s}
+const BUCKET="car-photos";
+const storedPath=u=>{const m=String(u).split(`/storage/v1/object/public/${BUCKET}/`);return m.length>1?decodeURIComponent(m[1].split("?")[0]):null};
+function removeStored(urls){const paths=urls.map(storedPath).filter(Boolean);if(paths.length)sb.storage.from(BUCKET).remove(paths).catch(()=>{})}
+
+$("#ed").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const g=id=>$("#"+id).value.trim();
+  const row={brand:g("e-brand"),model:g("e-model"),variant:g("e-variant"),year:num(g("e-year")),price:num(g("e-price")),km:num(g("e-km")),
+    fuel:g("e-fuel"),trans:g("e-trans"),owner:+g("e-owner"),reg:g("e-reg").toUpperCase(),colour:g("e-colour"),tagline:g("e-tag"),features:ED.feats,sold:$("#e-sold").checked};
+  const need=[["e-brand",row.brand],["e-model",row.model],["e-year",row.year>=1990&&row.year<=new Date().getFullYear()+1],["e-price",row.price>0]];
+  need.forEach(([id,ok])=>$("#"+id).classList.toggle("bad",!ok));
+  const err=$("#eerr");err.textContent="";
+  if(need.some(n=>!n[1])){err.textContent="Please fill in brand, model, a valid year and the price.";$(".bad",$("#ed")).focus();return}
+  if(!ED.photos.length){err.textContent="Please add at least one photo. The first photo is the cover.";return}
+  const save=$("#esave"),prog=$("#eprog");save.disabled=true;
+  try{
+    const slug=ED.slug||uniqueSlug(slugify(`${row.brand} ${row.model} ${row.variant} ${row.year}`)||"car");
+    const pend=ED.photos.filter(p=>p.blob);let done=0;
+    for(const p of pend){
+      prog.textContent=`Uploading photo ${++done} of ${pend.length}…`;
+      const path=`${slug}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.jpg`;
+      const {error}=await sb.storage.from(BUCKET).upload(path,p.blob,{contentType:"image/jpeg",cacheControl:"31536000"});
+      if(error)throw error;
+      p.url=sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+    }
+    prog.textContent="Saving…";
+    row.images=ED.photos.map(p=>p.url);
+    if(row.sold&&!ED.wasSold)row.sold_at=new Date().toISOString();
+    if(!row.sold)row.sold_at=null;
+    let res;
+    if(ED.id)res=await sb.from("cars").update(row).eq("id",ED.id);
+    else res=await sb.from("cars").insert({...row,slug});
+    if(res.error)throw res.error;
+    removeStored(ED.removed);
+    const wasNew=!ED.id;
+    await loadCars();closeEditor();renderCars();toast(wasNew?"Car added. It is now on your website.":"Changes saved");
+  }catch(ex){
+    console.warn(ex);
+    err.textContent="Sorry, the car could not be saved. "+(ex&&ex.message?ex.message:"Please check your internet and try again.");
+  }
+  save.disabled=false;prog.textContent="";
+});
+
+/* ------------------------------------------------ start */
+async function enter(){
+  show("dash");tab("leads");
+  try{await Promise.all([loadLeads(),loadCars()]);renderLeads();renderCars()}
+  catch(ex){console.warn(ex);toast("Could not load data. Please refresh.",true)}
+}
+async function boot(){
+  if(!LIVE){show("setup");return}
+  const {data}=await sb.auth.getSession();
+  if(data.session&&isAdmin(data.session.user))enter();
+  else{if(data.session)await sb.auth.signOut();show("login")}
+  sb.auth.onAuthStateChange(ev=>{if(ev==="SIGNED_OUT")show("login")});
+}
+boot();
+</script>
+</body>
+</html>
