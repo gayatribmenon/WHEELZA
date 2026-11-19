@@ -66,7 +66,7 @@ button,input,select{font:inherit;color:inherit}
 
 /* hero strip */
 .strip{margin-top:18px;border-radius:22px;overflow:hidden;position:relative;color:#fff;
-  background:linear-gradient(110deg,var(--brand) 20%,var(--brand2));display:grid;grid-template-columns:1.1fr 1fr;align-items:center;min-height:190px}
+  background:linear-gradient(110deg,var(--brand) 20%,var(--brand2));display:grid;grid-template-columns:1fr;align-items:center;min-height:170px}
 .strip>div{padding:24px 28px}
 .strip-cta{margin-top:16px}
 .strip .pill{background:#fff;color:var(--brand);font-size:15px;padding:11px 20px}
@@ -387,7 +387,6 @@ function listView(){
   app.innerHTML=`
   <section class="strip" aria-label="Welcome">
     <div><h1>Your next ride is waiting. Drive home happy.</h1><p>Real photos, clear prices and an EMI you can check before you visit. Tell us what you are looking for and we will find it.</p><div class="strip-cta"><button class="pill" id="reg-hero" type="button" data-reg="">Register now</button></div></div>
-    <img src="${HERO.src}" alt="${esc(HERO.alt)}">
   </section>
   <div class="shop">
     <button class="ftab" id="ftab" type="button" aria-label="Open filters">Filters</button>
