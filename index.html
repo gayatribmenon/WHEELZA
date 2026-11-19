@@ -44,6 +44,7 @@ button,input,select{font:inherit;color:inherit}
 .top .nums{display:flex;flex-direction:column;line-height:1.25;font-weight:700;font-size:15px}
 .top .nums small{opacity:.85;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
 .top .nums a{text-decoration:none}
+.sepd{font-style:normal}
 .acts{display:flex;align-items:center;gap:8px}
 .stage img{cursor:zoom-in}
 .lb{position:fixed;inset:0;z-index:50;background:rgba(10,12,16,.94);display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
@@ -197,12 +198,15 @@ button,input,select{font:inherit;color:inherit}
 .cta .row{display:flex;gap:8px;flex-wrap:wrap}
 @media(max-width:600px){
   .top{padding-block:10px;position:relative}
-  .top .wrap{display:grid;grid-template-columns:1fr auto;grid-template-areas:"logo wa" "nums nums";gap:8px 12px;align-items:center}
+  .top .wrap{display:grid;grid-template-columns:1fr auto;grid-template-areas:"logo wa" "nums admin";gap:8px 12px;align-items:center}
   .contact{display:contents}
   .logo{grid-area:logo;font-size:19px}
   .acts{grid-area:wa}
-  .top .nums{grid-area:nums;flex-direction:row;align-items:center;gap:8px;font-size:14px;border-top:1px solid rgba(255,255,255,.28);padding-top:8px}
+  .topadmin{grid-area:admin;min-height:36px;padding:6px 12px;font-size:13px;margin-top:8px}
+  .top .nums{grid-area:nums;flex-direction:row;align-items:center;gap:8px;font-size:14px;border-top:1px solid rgba(255,255,255,.28);padding-top:8px;margin-top:8px}
   .top .nums small{font-size:10px}
+  .top .nums span{display:flex;flex-direction:column}
+  .sepd{display:none}
   .find{display:none}
   .pill{min-height:44px;justify-content:center}
   .strip{margin-top:14px}
@@ -283,12 +287,12 @@ button,input,select{font:inherit;color:inherit}
   <div class="wrap">
     <a class="logo" href="#" aria-label="WHEELZA home"><i></i>WHEELZA</a>
     <div class="contact" id="contact">
-      <div class="nums"><small>Call us</small><span><a href="tel:+918129694868">81296 94868</a> · <a href="tel:+919895563618">98955 63618</a></span></div>
+      <div class="nums"><small>Call us</small><span><a href="tel:+918129694868">81296 94868</a><i class="sepd"> · </i><a href="tel:+919895563618">98955 63618</a></span></div>
       <div class="acts">
-        <button class="pill sun" id="reg-top" type="button" data-reg="auto">Register</button>
         <a class="pill wa" id="wa-top" href="#" target="_blank" rel="noopener">WhatsApp</a>
         <a class="pill line find" href="https://maps.app.goo.gl/WFd6LkwXZ2kAwPC89" target="_blank" rel="noopener">Find us</a>
       </div>
+      <a class="pill line topadmin" href="admin.html">Admin login</a>
     </div>
   </div>
 </header>
